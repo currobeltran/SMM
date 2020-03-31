@@ -1,7 +1,6 @@
 package paintbasico2d;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
@@ -222,6 +221,11 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         selectorModos.add(modoAlisar);
 
         modoEditar.setText("Editar");
+        modoEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modoEditarActionPerformed(evt);
+            }
+        });
         selectorModos.add(modoEditar);
 
         herramientasInferior.add(selectorModos);
@@ -544,6 +548,18 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         if(ventanaActiva!=null)
             ventanaActiva.setGrosor((int)selectorGrosor.getValue());
     }//GEN-LAST:event_selectorGrosorStateChanged
+
+    private void modoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoEditarActionPerformed
+        obtenerVentanaActiva();
+        
+        if(ventanaActiva!=null){
+            ventanaActiva.setEditar(!ventanaActiva.isEditar());
+            if(ventanaActiva.isEditar())
+                barraEstado.setText("Modo editar activado");
+            else
+                barraEstado.setText("Modo editar desactivado");
+        }
+    }//GEN-LAST:event_modoEditarActionPerformed
     
     /**
      * Método para obtener cual de los marcos secundarios está activo. Si existe
@@ -552,10 +568,10 @@ public class MarcoPrincipal extends javax.swing.JFrame {
      */
     private void obtenerVentanaActiva(){
         ventanaActiva=(MarcoSecundario)escritorio.getSelectedFrame();
-        
+    }
+    
+    private void cambiarEstadoBotones(){
         if(ventanaActiva!=null){
-            
-            ventanaActiva.setVentana(this);
             
             this.botonAmarillo=ventanaActiva.getVentana().botonAmarillo;
             this.botonAzul=ventanaActiva.getVentana().botonAzul;
@@ -564,14 +580,14 @@ public class MarcoPrincipal extends javax.swing.JFrame {
             this.botonVerde=ventanaActiva.getVentana().botonVerde;
             this.botonBlanco=ventanaActiva.getVentana().botonBlanco;
 
-            this.modoAlisar=ventanaActiva.getVentana().modoAlisar;
-            this.modoTransparencia=ventanaActiva.getVentana().modoTransparencia;
-            this.modoRelleno=ventanaActiva.getVentana().modoRelleno;
-            this.modoEditar=ventanaActiva.getVentana().modoEditar;
-            this.modoPunto=ventanaActiva.getVentana().modoPunto;
-            this.modoLinea=ventanaActiva.getVentana().modoLinea;
-            this.modoRectangulo=ventanaActiva.getVentana().modoRectangulo;
-            this.modoElipse=ventanaActiva.getVentana().modoElipse;
+            this.modoAlisar.setEnabled(ventanaActiva.getVentana().modoAlisar.isEnabled());
+            this.modoTransparencia.setEnabled(ventanaActiva.getVentana().modoTransparencia.isEnabled());
+            this.modoRelleno.setEnabled(ventanaActiva.getVentana().modoRelleno.isEnabled());
+            this.modoEditar.setEnabled(ventanaActiva.getVentana().modoEditar.isEnabled());
+            this.modoPunto.setEnabled(ventanaActiva.getVentana().modoPunto.isEnabled());
+            this.modoLinea.setSelected(ventanaActiva.getVentana().modoLinea.isSelected());
+            this.modoRectangulo.setEnabled(ventanaActiva.getVentana().modoRectangulo.isEnabled());
+            this.modoElipse.setEnabled(ventanaActiva.getVentana().modoElipse.isEnabled());
             
             this.selectorGrosor=ventanaActiva.getVentana().selectorGrosor;
         }

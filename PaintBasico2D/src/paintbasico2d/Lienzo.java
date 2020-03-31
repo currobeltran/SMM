@@ -8,9 +8,6 @@ import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -23,13 +20,12 @@ public class Lienzo extends javax.swing.JPanel {
     //Atributos de la clase
     private Herramientas herramienta=Herramientas.Punto;
     private ArrayList<Shape> formas=new ArrayList();
-    private Line2D lineaActiva;
-    private Rectangle cuadradoActivo;
-    private Ellipse2D ovaloActivo;
-    private Point2D paux;
+    private Point2D p1;
     private BasicStroke grosor=new BasicStroke(1);
     private Paint color=Color.BLACK;
     private boolean relleno=false;
+    private boolean editar=false;
+    private Shape formaSeleccionada=null;
 
     //Getters y setters de los atributos de la clase
     
@@ -58,6 +54,14 @@ public class Lienzo extends javax.swing.JPanel {
 
     public boolean isRelleno() {
         return relleno;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
+    }
+    
+    public boolean isEditar(){
+        return editar;
     }
     
     /**
@@ -89,81 +93,97 @@ public class Lienzo extends javax.swing.JPanel {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 formMouseReleased(evt);
             }
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                formMouseClicked(evt);
-            }
         });
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * En esta funcion y la siguiente igualamos pfinal a pinicial ya que, al ser
-     * estos los dos eventos que provocan el dibujado de una nueva figura, 
-     * necesitamos reinciar el valor de los atributos que definen la geometría 
-     * de la nueva forma. 
-     * 
-     * Para pinicial vemos cual ha sido el punto donde se ha generado el evento
-     * (click o presión), y este valor se lo establecemos a pfinal, ya que en un
-     * primer instante el punto inicial y el final deben ser iguales hasta que 
-     * generemos un evento que actualice el valor del atributo pfinal (eventos 
-     * mouseDragged y mouseReleased).
-     * 
-     * Cuando estén todos los atributos actualizados tras el evento, llamamos al
-     * método paint(), el cual dibujará los cambios en el lienzo.
-     */
-    
-    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        if(herramienta==Herramientas.Punto)
-            formas.add(new Line2D.Float(evt.getPoint(), evt.getPoint()));
-        
-        this.repaint();
-    }//GEN-LAST:event_formMouseClicked
-
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
-        paux=evt.getPoint();
-        
-        switch(herramienta){
-            case Linea:
-                formas.add(new Line2D.Double(evt.getPoint(), evt.getPoint()));
-            break;
-                
-            case Cuadrado:
-                formas.add(new Rectangle(evt.getX(), evt.getY(), 0, 0));
-            break;
-                
-            case Ovalo:
-                formas.add(new Ellipse2D.Double(evt.getX(), evt.getY(), 0, 0));
-            break;
-        }
-                
-        this.repaint();     
+        createShape(evt);
+        this.repaint();    
     }//GEN-LAST:event_formMousePressed
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
-        switch(herramienta){
-            case Linea:
-                lineaActiva=(Line2D)formas.get(formas.size()-1);
-                lineaActiva.setLine(lineaActiva.getP1(), evt.getPoint());
-            break;
-                
-            case Cuadrado:
-                cuadradoActivo=(Rectangle)formas.get(formas.size()-1);
-                cuadradoActivo.setFrameFromDiagonal(paux,evt.getPoint());
-            break;
-                
-            case Ovalo:
-                ovaloActivo=(Ellipse2D)formas.get(formas.size()-1);
-                ovaloActivo.setFrameFromDiagonal(paux, evt.getPoint());
-            break;
-        }
-        
+        updateShape(evt);
         this.repaint();
     }//GEN-LAST:event_formMouseDragged
 
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
-        formMouseDragged(evt);
+        updateShape(evt);
         this.repaint();
     }//GEN-LAST:event_formMouseReleased
 
+    private void createShape(java.awt.event.MouseEvent evt){
+        p1=evt.getPoint();
+        
+        if(!editar)
+            switch(herramienta){
+                case Punto:
+                    formas.add(new MiLinea2D(evt.getPoint(), evt.getPoint()));
+                break;
+
+                case Linea:
+                    formas.add(new MiLinea2D(evt.getPoint(), evt.getPoint()));
+                break;
+
+                case Cuadrado:
+                    formas.add(new Rectangle(evt.getX(), evt.getY(), 0, 0));
+                break;
+
+                case Ovalo:
+                    formas.add(new MiElipse2D(evt.getPoint(), 0, 0));
+                break;
+            }
+        
+        else{
+            formaSeleccionada=setSelectedShape(evt.getPoint());
+        }
+    }
+    
+    private void updateShape(java.awt.event.MouseEvent evt){
+        Shape s;
+        
+        if(editar){
+            if(formaSeleccionada!=null)
+                setLocation(formaSeleccionada, evt.getPoint());
+        }
+        
+        else{
+            s=formas.get(formas.size()-1);
+        
+            if(s instanceof MiLinea2D){
+                ((MiLinea2D)s).setLine(p1,evt.getPoint());
+            }     
+
+            else if(s instanceof Rectangle){
+                ((Rectangle)s).setFrameFromDiagonal(p1,evt.getPoint());
+            }
+
+            else if(s instanceof MiElipse2D){
+                ((MiElipse2D)s).setFrameFromDiagonal(p1, evt.getPoint());
+            }
+        }
+    }
+    
+    private Shape setSelectedShape(Point2D p){
+        for (Shape s : formas){
+            if(s.contains(p)){
+                return s;
+            }
+        }
+        return null;
+    }
+    
+    private void setLocation(Shape s, Point2D pos){
+        if(s instanceof MiLinea2D){
+            ((MiLinea2D)s).setLocation(pos);
+        }
+        else if(s instanceof Rectangle){
+            ((Rectangle)s).setLocation((Point)pos);
+        }
+        else if(s instanceof MiElipse2D){
+            ((MiElipse2D)s).setLocation(pos);
+        }
+    }
+    
     @Override
     public void paint(Graphics g){
         super.paint(g);

@@ -58,6 +58,14 @@ public class MarcoSecundario extends javax.swing.JInternalFrame {
         return ventana;
     }
     
+    public void setEditar(boolean editar){
+        lienzo1.setEditar(editar);
+    }
+    
+    public boolean isEditar(){
+        return lienzo1.isEditar();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

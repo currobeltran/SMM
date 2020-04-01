@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
+import javax.swing.JSpinner;
 
 /**
  *
@@ -215,9 +216,19 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         selectorModos.add(modoRelleno);
 
         modoTransparencia.setText("Transparencia");
+        modoTransparencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modoTransparenciaActionPerformed(evt);
+            }
+        });
         selectorModos.add(modoTransparencia);
 
         modoAlisar.setText("Alisar");
+        modoAlisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modoAlisarActionPerformed(evt);
+            }
+        });
         selectorModos.add(modoAlisar);
 
         modoEditar.setText("Editar");
@@ -281,9 +292,19 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         menuEdicion.add(visibilidadBarraEstado);
 
         visibilidadBarraFormas.setText("Ver barra de formas");
+        visibilidadBarraFormas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                visibilidadBarraFormasActionPerformed(evt);
+            }
+        });
         menuEdicion.add(visibilidadBarraFormas);
 
         visibilidadBarraAtributos.setText("Ver barra de atributos");
+        visibilidadBarraAtributos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                visibilidadBarraAtributosActionPerformed(evt);
+            }
+        });
         menuEdicion.add(visibilidadBarraAtributos);
 
         barraMenu.add(menuEdicion);
@@ -560,6 +581,38 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 barraEstado.setText("Modo editar desactivado");
         }
     }//GEN-LAST:event_modoEditarActionPerformed
+
+    private void visibilidadBarraFormasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibilidadBarraFormasActionPerformed
+        herramientasSuperior.setVisible(!herramientasSuperior.isVisible());
+    }//GEN-LAST:event_visibilidadBarraFormasActionPerformed
+
+    private void visibilidadBarraAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibilidadBarraAtributosActionPerformed
+        herramientasInferior.setVisible(!herramientasInferior.isVisible());
+    }//GEN-LAST:event_visibilidadBarraAtributosActionPerformed
+
+    private void modoAlisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoAlisarActionPerformed
+        obtenerVentanaActiva();
+        
+        if(ventanaActiva!=null){
+            ventanaActiva.setAlisado(!ventanaActiva.isAlisado());
+            if(ventanaActiva.isAlisado())
+                barraEstado.setText("Modo alisado activado");
+            else
+                barraEstado.setText("Modo alisado desactivado");
+        }
+    }//GEN-LAST:event_modoAlisarActionPerformed
+
+    private void modoTransparenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoTransparenciaActionPerformed
+        obtenerVentanaActiva();
+        
+        if(ventanaActiva!=null){
+            ventanaActiva.setTransparencia(!ventanaActiva.isTransparencia());
+            if(ventanaActiva.isTransparencia())
+                barraEstado.setText("Modo transparencia activado");
+            else
+                barraEstado.setText("Modo transparencia desactivado");
+        }
+    }//GEN-LAST:event_modoTransparenciaActionPerformed
     
     /**
      * Método para obtener cual de los marcos secundarios está activo. Si existe
@@ -591,6 +644,10 @@ public class MarcoPrincipal extends javax.swing.JFrame {
             
             this.selectorGrosor=ventanaActiva.getVentana().selectorGrosor;
         }
+    }
+
+    public void setSelectorGrosor(int i) {
+        this.selectorGrosor.setValue((int)i);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

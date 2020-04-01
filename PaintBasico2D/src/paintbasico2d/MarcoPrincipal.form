@@ -61,11 +61,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ver barra de formas"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="visibilidadBarraFormasActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="visibilidadBarraAtributos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ver barra de atributos"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="visibilidadBarraAtributosActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -339,11 +345,17 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Transparencia"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="modoTransparenciaActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="modoAlisar">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Alisar"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="modoAlisarActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="modoEditar">
                   <Properties>

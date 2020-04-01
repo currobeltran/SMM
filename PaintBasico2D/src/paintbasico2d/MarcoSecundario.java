@@ -40,6 +40,7 @@ public class MarcoSecundario extends javax.swing.JInternalFrame {
     
     public void setGrosor(int i){
         lienzo1.setGrosor(new BasicStroke(i));
+//        ventana.setSelectorGrosor(i);
     }
     
     public void setRelleno(boolean relleno){
@@ -64,6 +65,22 @@ public class MarcoSecundario extends javax.swing.JInternalFrame {
     
     public boolean isEditar(){
         return lienzo1.isEditar();
+    }
+    
+    public void setTransparencia(boolean transparencia){
+        lienzo1.setTransparencia(transparencia);
+    }
+    
+    public void setAlisado(boolean alisado){
+        lienzo1.setAlisado(alisado);
+    }
+    
+    public boolean isTransparencia(){
+        return lienzo1.isTransparencia();
+    }
+    
+    public boolean isAlisado(){
+        return lienzo1.isAlisado();
     }
     
     /**

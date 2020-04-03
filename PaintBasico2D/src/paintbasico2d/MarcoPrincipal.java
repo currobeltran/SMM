@@ -1,10 +1,15 @@
 package paintbasico2d;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.ComboBoxModel;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JSpinner;
+import javax.swing.ListCellRenderer;
 
 /**
  *
@@ -36,25 +41,24 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         barraSuperior = new javax.swing.JPanel();
-        herramientasSuperior = new javax.swing.JToolBar();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
         modoPunto = new javax.swing.JToggleButton();
         modoLinea = new javax.swing.JToggleButton();
         modoRectangulo = new javax.swing.JToggleButton();
         modoElipse = new javax.swing.JToggleButton();
+        jSeparator2 = new javax.swing.JSeparator();
+        seleccionColores = new javax.swing.JComboBox();
+        jSeparator3 = new javax.swing.JSeparator();
+        selectorGrosor = new javax.swing.JSpinner();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
+        jToggleButton3 = new javax.swing.JToggleButton();
+        jToggleButton4 = new javax.swing.JToggleButton();
         barraInferior = new javax.swing.JPanel();
         herramientasInferior = new javax.swing.JToolBar();
-        etiquetaColor = new javax.swing.JLabel();
-        selectorColores = new javax.swing.JPanel();
-        botonNegro = new javax.swing.JToggleButton();
-        botonRojo = new javax.swing.JToggleButton();
-        botonAzul = new javax.swing.JToggleButton();
-        botonBlanco = new javax.swing.JToggleButton();
-        botonAmarillo = new javax.swing.JToggleButton();
-        botonVerde = new javax.swing.JToggleButton();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(1000, 0));
-        etiquetaGrosor = new javax.swing.JLabel();
-        selectorGrosor = new javax.swing.JSpinner();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(50, 0), new java.awt.Dimension(1000, 0));
         selectorModos = new javax.swing.JPanel();
         modoRelleno = new javax.swing.JCheckBox();
         modoTransparencia = new javax.swing.JCheckBox();
@@ -74,9 +78,23 @@ public class MarcoPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        barraSuperior.setLayout(new java.awt.BorderLayout());
+        barraSuperior.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        modoPunto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/Lapiz.gif"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/nuevo.png"))); // NOI18N
+        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        barraSuperior.add(jButton1);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/abrir.png"))); // NOI18N
+        barraSuperior.add(jButton2);
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/guardar.png"))); // NOI18N
+        barraSuperior.add(jButton3);
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator1.setPreferredSize(new java.awt.Dimension(2, 50));
+        barraSuperior.add(jSeparator1);
+
+        modoPunto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/punto.png"))); // NOI18N
         modoPunto.setFocusable(false);
         modoPunto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         modoPunto.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -85,9 +103,9 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 modoPuntoActionPerformed(evt);
             }
         });
-        herramientasSuperior.add(modoPunto);
+        barraSuperior.add(modoPunto);
 
-        modoLinea.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/Linea.gif"))); // NOI18N
+        modoLinea.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/linea.png"))); // NOI18N
         modoLinea.setFocusable(false);
         modoLinea.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         modoLinea.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -96,9 +114,9 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 modoLineaActionPerformed(evt);
             }
         });
-        herramientasSuperior.add(modoLinea);
+        barraSuperior.add(modoLinea);
 
-        modoRectangulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/Rectangulo.gif"))); // NOI18N
+        modoRectangulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/rectangulo.png"))); // NOI18N
         modoRectangulo.setFocusable(false);
         modoRectangulo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         modoRectangulo.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -107,9 +125,9 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 modoRectanguloActionPerformed(evt);
             }
         });
-        herramientasSuperior.add(modoRectangulo);
+        barraSuperior.add(modoRectangulo);
 
-        modoElipse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/Ovalo.gif"))); // NOI18N
+        modoElipse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/elipse.png"))); // NOI18N
         modoElipse.setFocusable(false);
         modoElipse.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         modoElipse.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -118,89 +136,50 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 modoElipseActionPerformed(evt);
             }
         });
-        herramientasSuperior.add(modoElipse);
+        barraSuperior.add(modoElipse);
 
-        barraSuperior.add(herramientasSuperior, java.awt.BorderLayout.CENTER);
+        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator2.setPreferredSize(new java.awt.Dimension(2, 50));
+        barraSuperior.add(jSeparator2);
 
-        getContentPane().add(barraSuperior, java.awt.BorderLayout.PAGE_START);
-
-        barraInferior.setLayout(new java.awt.BorderLayout());
-
-        herramientasInferior.setRollover(true);
-
-        etiquetaColor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        etiquetaColor.setText("Color");
-        etiquetaColor.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        herramientasInferior.add(etiquetaColor);
-
-        selectorColores.setToolTipText("");
-        selectorColores.setLayout(new java.awt.GridLayout(2, 0));
-
-        botonNegro.setBackground(new java.awt.Color(0, 0, 0));
-        botonNegro.setForeground(new java.awt.Color(0, 0, 0));
-        botonNegro.setMaximumSize(new java.awt.Dimension(30, 30));
-        botonNegro.setMinimumSize(new java.awt.Dimension(30, 30));
-        botonNegro.setPreferredSize(new java.awt.Dimension(30, 30));
-        botonNegro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonNegroActionPerformed(evt);
+        seleccionColores.setRenderer(new MiCellRenderer());
+        seleccionColores.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Negro", "Rojo", "Azul", "Blanco", "Amarillo", "Verde" }));
+        seleccionColores.setPreferredSize(new java.awt.Dimension(60, 40));
+        seleccionColores.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                seleccionColoresItemStateChanged(evt);
             }
         });
-        selectorColores.add(botonNegro);
+        barraSuperior.add(seleccionColores);
 
-        botonRojo.setBackground(new java.awt.Color(255, 0, 0));
-        botonRojo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonRojoActionPerformed(evt);
-            }
-        });
-        selectorColores.add(botonRojo);
-
-        botonAzul.setBackground(new java.awt.Color(0, 0, 255));
-        botonAzul.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAzulActionPerformed(evt);
-            }
-        });
-        selectorColores.add(botonAzul);
-
-        botonBlanco.setBackground(new java.awt.Color(255, 255, 255));
-        botonBlanco.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonBlancoActionPerformed(evt);
-            }
-        });
-        selectorColores.add(botonBlanco);
-
-        botonAmarillo.setBackground(new java.awt.Color(255, 255, 0));
-        botonAmarillo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAmarilloActionPerformed(evt);
-            }
-        });
-        selectorColores.add(botonAmarillo);
-
-        botonVerde.setBackground(new java.awt.Color(0, 255, 0));
-        botonVerde.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonVerdeActionPerformed(evt);
-            }
-        });
-        selectorColores.add(botonVerde);
-
-        herramientasInferior.add(selectorColores);
-        herramientasInferior.add(filler1);
-
-        etiquetaGrosor.setText("Grosor");
-        herramientasInferior.add(etiquetaGrosor);
+        jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator3.setPreferredSize(new java.awt.Dimension(2, 50));
+        barraSuperior.add(jSeparator3);
 
         selectorGrosor.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 selectorGrosorStateChanged(evt);
             }
         });
-        herramientasInferior.add(selectorGrosor);
-        herramientasInferior.add(filler2);
+        barraSuperior.add(selectorGrosor);
+
+        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/seleccion.png"))); // NOI18N
+        barraSuperior.add(jToggleButton1);
+
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/rellenar.png"))); // NOI18N
+        barraSuperior.add(jToggleButton2);
+
+        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/transparencia.png"))); // NOI18N
+        barraSuperior.add(jToggleButton3);
+
+        jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/alisar.png"))); // NOI18N
+        barraSuperior.add(jToggleButton4);
+
+        getContentPane().add(barraSuperior, java.awt.BorderLayout.PAGE_START);
+
+        barraInferior.setLayout(new java.awt.BorderLayout());
+
+        herramientasInferior.setRollover(true);
 
         selectorModos.setLayout(new java.awt.GridLayout(2, 0));
 
@@ -252,7 +231,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
 
         menuArchivo.setText("Archivo");
 
-        opcionNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/Goma.gif"))); // NOI18N
+        opcionNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/nuevo.png"))); // NOI18N
         opcionNuevo.setText("Nuevo");
         opcionNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -261,7 +240,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         });
         menuArchivo.add(opcionNuevo);
 
-        opcionAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/NuevoBoceto.GIF"))); // NOI18N
+        opcionAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/abrir.png"))); // NOI18N
         opcionAbrir.setText("Abrir");
         opcionAbrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,7 +249,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         });
         menuArchivo.add(opcionAbrir);
 
-        opcionGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/Guardar.gif"))); // NOI18N
+        opcionGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/guardar.png"))); // NOI18N
         opcionGuardar.setText("Guardar");
         opcionGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -352,34 +331,6 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_modoPuntoActionPerformed
 
     /**
-     * Acciones realizadas al seleccionar en la paleta de colores el rojo.
-     * 
-     * @param evt 
-     */
-    private void botonRojoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRojoActionPerformed
-        obtenerVentanaActiva();
-        
-        if(ventanaActiva!=null)
-            ventanaActiva.setColor(Color.RED);
-        
-        barraEstado.setText("Color rojo seleccionado");
-    }//GEN-LAST:event_botonRojoActionPerformed
-
-    /**
-     * Acciones realizadas al seleccionar en la paleta de colores el negro.
-     * 
-     * @param evt 
-     */
-    private void botonNegroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNegroActionPerformed
-        obtenerVentanaActiva();
-        
-        if(ventanaActiva!=null)
-            ventanaActiva.setColor(Color.BLACK);
-        
-        barraEstado.setText("Color negro seleccionado");
-    }//GEN-LAST:event_botonNegroActionPerformed
-
-    /**
      * Acciones realizadas al seleccionar en la barra de herramientas el modo
      * línea. A parte de modificar el atributo herramienta de la clase lienzo,
      * se modifica el atributo de selección de los botones de herramientas, evitando que esten 
@@ -450,61 +401,6 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 
         barraEstado.setText("Modo elipse");
     }//GEN-LAST:event_modoElipseActionPerformed
-
-    /**
-     * Acciones realizadas al seleccionar en la paleta de colores el azul.
-     * 
-     * @param evt 
-     */
-    private void botonAzulActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAzulActionPerformed
-        obtenerVentanaActiva();
-        
-        if(ventanaActiva!=null)
-            ventanaActiva.setColor(Color.BLUE);
-        
-        barraEstado.setText("Color azul seleccionado");
-    }//GEN-LAST:event_botonAzulActionPerformed
-
-    /**
-     * Acciones realizadas al seleccionar en la paleta de colores el blanco.
-     * 
-     * @param evt 
-     */
-    private void botonBlancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonBlancoActionPerformed
-        obtenerVentanaActiva();
-        
-        if(ventanaActiva!=null)
-            ventanaActiva.setColor(Color.WHITE);
-        barraEstado.setText("Color blanco seleccionado");
-    }//GEN-LAST:event_botonBlancoActionPerformed
-
-    /**
-     * Acciones realizadas al seleccionar en la paleta de colores el amarillo.
-     * 
-     * @param evt 
-     */
-    private void botonAmarilloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAmarilloActionPerformed
-        obtenerVentanaActiva();
-        
-        if(ventanaActiva!=null)
-            ventanaActiva.setColor(Color.YELLOW);
-        
-        barraEstado.setText("Color amarillo seleccionado");
-    }//GEN-LAST:event_botonAmarilloActionPerformed
-
-    /**
-     * Acciones realizadas al seleccionar en la paleta de colores el verde.
-     * 
-     * @param evt 
-     */
-    private void botonVerdeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVerdeActionPerformed
-        obtenerVentanaActiva();
-        
-        if(ventanaActiva!=null)
-            ventanaActiva.setColor(Color.GREEN);
-        
-        barraEstado.setText("Color verde seleccionado");
-    }//GEN-LAST:event_botonVerdeActionPerformed
 
     /**
      * Acciones realizadas al marcar/desmarcar la casilla del modo relleno.
@@ -583,7 +479,11 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_modoEditarActionPerformed
 
     private void visibilidadBarraFormasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibilidadBarraFormasActionPerformed
-        herramientasSuperior.setVisible(!herramientasSuperior.isVisible());
+        modoPunto.setVisible(!modoPunto.isVisible());
+        modoLinea.setVisible(!modoLinea.isVisible());
+        modoRectangulo.setVisible(!modoRectangulo.isVisible());
+        modoElipse.setVisible(!modoElipse.isVisible());
+
     }//GEN-LAST:event_visibilidadBarraFormasActionPerformed
 
     private void visibilidadBarraAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibilidadBarraAtributosActionPerformed
@@ -613,6 +513,35 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 barraEstado.setText("Modo transparencia desactivado");
         }
     }//GEN-LAST:event_modoTransparenciaActionPerformed
+
+    private void seleccionColoresItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_seleccionColoresItemStateChanged
+        if(ventanaActiva!=null)
+            switch((String)evt.getItem()){
+                case "Negro":
+                    ventanaActiva.setColor(Color.BLACK);
+                break;
+
+                case "Rojo":
+                    ventanaActiva.setColor(Color.RED);
+                break;
+
+                case "Azul":
+                    ventanaActiva.setColor(Color.BLUE);
+                break;
+
+                case "Blanco":
+                    ventanaActiva.setColor(Color.WHITE);
+                break;
+
+                case "Amarillo":
+                    ventanaActiva.setColor(Color.YELLOW);
+                break;
+
+                case "Verde":
+                    ventanaActiva.setColor(Color.GREEN);
+                break;
+            }
+    }//GEN-LAST:event_seleccionColoresItemStateChanged
     
     /**
      * Método para obtener cual de los marcos secundarios está activo. Si existe
@@ -621,29 +550,6 @@ public class MarcoPrincipal extends javax.swing.JFrame {
      */
     private void obtenerVentanaActiva(){
         ventanaActiva=(MarcoSecundario)escritorio.getSelectedFrame();
-    }
-    
-    private void cambiarEstadoBotones(){
-        if(ventanaActiva!=null){
-            
-            this.botonAmarillo=ventanaActiva.getVentana().botonAmarillo;
-            this.botonAzul=ventanaActiva.getVentana().botonAzul;
-            this.botonNegro=ventanaActiva.getVentana().botonNegro;
-            this.botonRojo=ventanaActiva.getVentana().botonRojo;
-            this.botonVerde=ventanaActiva.getVentana().botonVerde;
-            this.botonBlanco=ventanaActiva.getVentana().botonBlanco;
-
-            this.modoAlisar.setEnabled(ventanaActiva.getVentana().modoAlisar.isEnabled());
-            this.modoTransparencia.setEnabled(ventanaActiva.getVentana().modoTransparencia.isEnabled());
-            this.modoRelleno.setEnabled(ventanaActiva.getVentana().modoRelleno.isEnabled());
-            this.modoEditar.setEnabled(ventanaActiva.getVentana().modoEditar.isEnabled());
-            this.modoPunto.setEnabled(ventanaActiva.getVentana().modoPunto.isEnabled());
-            this.modoLinea.setSelected(ventanaActiva.getVentana().modoLinea.isSelected());
-            this.modoRectangulo.setEnabled(ventanaActiva.getVentana().modoRectangulo.isEnabled());
-            this.modoElipse.setEnabled(ventanaActiva.getVentana().modoElipse.isEnabled());
-            
-            this.selectorGrosor=ventanaActiva.getVentana().selectorGrosor;
-        }
     }
 
     public void setSelectorGrosor(int i) {
@@ -655,19 +561,18 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel barraInferior;
     private javax.swing.JMenuBar barraMenu;
     private javax.swing.JPanel barraSuperior;
-    private javax.swing.JToggleButton botonAmarillo;
-    private javax.swing.JToggleButton botonAzul;
-    private javax.swing.JToggleButton botonBlanco;
-    private javax.swing.JToggleButton botonNegro;
-    private javax.swing.JToggleButton botonRojo;
-    private javax.swing.JToggleButton botonVerde;
     private javax.swing.JDesktopPane escritorio;
-    private javax.swing.JLabel etiquetaColor;
-    private javax.swing.JLabel etiquetaGrosor;
-    private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler2;
     private javax.swing.JToolBar herramientasInferior;
-    private javax.swing.JToolBar herramientasSuperior;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JToggleButton jToggleButton3;
+    private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuEdicion;
     private javax.swing.JCheckBox modoAlisar;
@@ -681,7 +586,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem opcionAbrir;
     private javax.swing.JMenuItem opcionGuardar;
     private javax.swing.JMenuItem opcionNuevo;
-    private javax.swing.JPanel selectorColores;
+    private javax.swing.JComboBox seleccionColores;
     private javax.swing.JSpinner selectorGrosor;
     private javax.swing.JPanel selectorModos;
     private javax.swing.JMenuItem visibilidadBarraAtributos;

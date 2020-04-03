@@ -43,17 +43,17 @@ public class Lienzo extends javax.swing.JPanel {
 
     public void setGrosor(BasicStroke grosor) {
         this.grosor = grosor;
-        setOtrosAtributos(super.getGraphics());
+        this.repaint();
     }
 
     public void setColor(Paint color) {
         this.color = color;
-        setOtrosAtributos(super.getGraphics());
+        this.repaint();
     }
 
     public void setRelleno(boolean relleno) {
         this.relleno = relleno;
-        setOtrosAtributos(super.getGraphics());
+        this.repaint();
     }
 
     public boolean isRelleno() {
@@ -70,12 +70,12 @@ public class Lienzo extends javax.swing.JPanel {
 
     public void setTransparencia(boolean transparencia) {
         this.transparencia = transparencia;
-        setOtrosAtributos(super.getGraphics());
+        this.repaint();
     }
 
     public void setAlisado(boolean alisado) {
         this.alisado = alisado;
-        setOtrosAtributos(super.getGraphics());
+        this.repaint();
     }
 
     public boolean isTransparencia() {
@@ -120,17 +120,17 @@ public class Lienzo extends javax.swing.JPanel {
 
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
         createShape(evt);
-        setOtrosAtributos(super.getGraphics());    
+        this.repaint();    
     }//GEN-LAST:event_formMousePressed
 
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         updateShape(evt);
-        setOtrosAtributos(super.getGraphics());
+        this.repaint();
     }//GEN-LAST:event_formMouseDragged
 
     private void formMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseReleased
         updateShape(evt);
-        setOtrosAtributos(super.getGraphics());
+        this.repaint();
     }//GEN-LAST:event_formMouseReleased
 
     private void createShape(java.awt.event.MouseEvent evt){
@@ -206,8 +206,11 @@ public class Lienzo extends javax.swing.JPanel {
         }
     }
     
-    private void setOtrosAtributos(Graphics g){
-        Graphics2D g2d=(Graphics2D)g;
+    @Override
+    public void paint(Graphics g){
+        super.paint(g);
+        
+        Graphics2D g2d=(Graphics2D)g; 
         
         if(transparencia && relleno){
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
@@ -222,15 +225,6 @@ public class Lienzo extends javax.swing.JPanel {
         else{
             g2d.setRenderingHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF));
         }
-        
-        paint(g2d);
-    }
-    
-    @Override
-    public void paint(Graphics g){
-        super.paint(g);
-        
-        Graphics2D g2d=(Graphics2D)g; 
         
         g2d.setPaint(color);
         

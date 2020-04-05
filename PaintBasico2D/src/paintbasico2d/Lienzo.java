@@ -30,7 +30,10 @@ public class Lienzo extends javax.swing.JPanel {
     private boolean transparencia=false;
     private boolean alisado=false;
     private Shape formaSeleccionada=null;
-
+    
+    //Manejadores de lienzo
+    private ArrayList<LienzoListener> lienzoEventListeners=new ArrayList();
+    
     //Getters y setters de los atributos de la clase
     
     public void setHerramienta(Herramientas herramienta) {
@@ -84,6 +87,14 @@ public class Lienzo extends javax.swing.JPanel {
 
     public boolean isAlisado() {
         return alisado;
+    }
+
+    public Paint getColor() {
+        return color;
+    }
+
+    public BasicStroke getGrosor() {
+        return grosor;
     }
     
     /**
@@ -171,7 +182,7 @@ public class Lienzo extends javax.swing.JPanel {
         else{
             s=formas.get(formas.size()-1);
         
-            if(s instanceof MiLinea2D){
+            if(s instanceof MiLinea2D && herramienta!=Herramientas.Punto){
                 ((MiLinea2D)s).setLine(p1,evt.getPoint());
             }     
 
@@ -205,6 +216,36 @@ public class Lienzo extends javax.swing.JPanel {
             ((MiElipse2D)s).setLocation(pos);
         }
     }
+    
+    /**
+     * Añade un nuevo manejador a la lista de manejadores del lienzo
+     * @param listener: Nuevo manejador a añadir
+     */
+    
+    public void addLienzoListener(LienzoListener listener){
+        if(listener!=null){
+            lienzoEventListeners.add(listener);
+        }
+    }
+    
+    /**
+     * Notificadores de eventos manejados por la clase
+     * @param evt 
+     */
+    
+    private void notify(LienzoEvent evt){
+        if(!lienzoEventListeners.isEmpty()){
+            for(LienzoListener listener : lienzoEventListeners){
+                
+            }
+        }
+    }
+    
+    /**
+     * Método que pinta los elementos que contenga el vector de formas
+     * de la clase.
+     * @param g 
+     */
     
     @Override
     public void paint(Graphics g){

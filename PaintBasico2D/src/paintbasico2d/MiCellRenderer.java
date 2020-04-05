@@ -25,32 +25,7 @@ public class MiCellRenderer extends JLabel implements ListCellRenderer{
     @Override
     public Component getListCellRendererComponent(JList jlist, Object e, int i, boolean seleccion, boolean foco) {
         
-        switch(e.toString()){
-            case "Negro": 
-                setIcon(new ColorIcon(Color.BLACK));
-            break;
-                
-            case "Rojo": 
-                setIcon(new ColorIcon(Color.RED));
-            break;
-                
-            case "Azul": 
-                setIcon(new ColorIcon(Color.BLUE));
-            break;
-                
-            case "Blanco": 
-                setIcon(new ColorIcon(Color.WHITE));
-            break;
-                
-            case "Amarillo": 
-                setIcon(new ColorIcon(Color.YELLOW));
-            break;
-                
-            case "Verde": 
-                setIcon(new ColorIcon(Color.GREEN));                
-            break;
-
-        }
+        setIcon(new ColorIcon((Color)e));
         
         if(seleccion){
             setBackground(Color.LIGHT_GRAY);

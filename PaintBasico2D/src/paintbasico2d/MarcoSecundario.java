@@ -14,8 +14,6 @@ import java.awt.Color;
  * @author curro
  */
 public class MarcoSecundario extends javax.swing.JInternalFrame {
-
-    private MarcoPrincipal ventana;
     
     /**
      * Creates new form MarcoSecundario
@@ -26,12 +24,14 @@ public class MarcoSecundario extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        
-        ventana=new MarcoPrincipal();
     }
 
     public void setHerramienta(Herramientas h){
         lienzo1.setHerramienta(h);
+    }
+    
+    public Herramientas getHerramienta(){
+        return lienzo1.getHerramienta();
     }
     
     public void setColor(Color c){
@@ -40,7 +40,6 @@ public class MarcoSecundario extends javax.swing.JInternalFrame {
     
     public void setGrosor(int i){
         lienzo1.setGrosor(new BasicStroke(i));
-//        ventana.setSelectorGrosor(i);
     }
     
     public void setRelleno(boolean relleno){
@@ -49,14 +48,6 @@ public class MarcoSecundario extends javax.swing.JInternalFrame {
     
     public boolean isRelleno(){
         return lienzo1.isRelleno();
-    }
-
-    public void setVentana(MarcoPrincipal ventana) {
-        this.ventana=ventana;
-    }
-
-    public MarcoPrincipal getVentana() {
-        return ventana;
     }
     
     public void setEditar(boolean editar){
@@ -81,6 +72,10 @@ public class MarcoSecundario extends javax.swing.JInternalFrame {
     
     public boolean isAlisado(){
         return lienzo1.isAlisado();
+    }
+    
+    public Lienzo getLienzo(){
+        return lienzo1;
     }
     
     /**

@@ -1,15 +1,13 @@
 package paintbasico2d;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.io.File;
 import java.util.ArrayList;
-import javax.swing.ComboBoxModel;
+import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JSpinner;
-import javax.swing.ListCellRenderer;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -21,6 +19,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
      * Atributos de la ventana principal
      */
     private MarcoSecundario ventanaActiva;
+    private MiManejador manejador=new MiManejador();
     
     /**
      * Creates new form MarcoPrincipal
@@ -50,20 +49,14 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         modoRectangulo = new javax.swing.JToggleButton();
         modoElipse = new javax.swing.JToggleButton();
         jSeparator2 = new javax.swing.JSeparator();
-        seleccionColores = new javax.swing.JComboBox();
+        seleccionColores = new javax.swing.JComboBox<Color>();
         jSeparator3 = new javax.swing.JSeparator();
         selectorGrosor = new javax.swing.JSpinner();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jToggleButton2 = new javax.swing.JToggleButton();
-        jToggleButton3 = new javax.swing.JToggleButton();
-        jToggleButton4 = new javax.swing.JToggleButton();
+        modoEditar = new javax.swing.JToggleButton();
+        modoRelleno = new javax.swing.JToggleButton();
+        modoTransparencia = new javax.swing.JToggleButton();
+        modoAlisar = new javax.swing.JToggleButton();
         barraInferior = new javax.swing.JPanel();
-        herramientasInferior = new javax.swing.JToolBar();
-        selectorModos = new javax.swing.JPanel();
-        modoRelleno = new javax.swing.JCheckBox();
-        modoTransparencia = new javax.swing.JCheckBox();
-        modoAlisar = new javax.swing.JCheckBox();
-        modoEditar = new javax.swing.JCheckBox();
         barraEstado = new javax.swing.JLabel();
         escritorio = new javax.swing.JDesktopPane();
         barraMenu = new javax.swing.JMenuBar();
@@ -143,7 +136,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         barraSuperior.add(jSeparator2);
 
         seleccionColores.setRenderer(new MiCellRenderer());
-        seleccionColores.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Negro", "Rojo", "Azul", "Blanco", "Amarillo", "Verde" }));
+        seleccionColores.setModel(new javax.swing.DefaultComboBoxModel(new Color[] { Color.BLACK, Color.RED, Color.BLUE, Color.WHITE, Color.YELLOW, Color.GREEN }));
         seleccionColores.setPreferredSize(new java.awt.Dimension(60, 40));
         seleccionColores.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -163,64 +156,41 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         });
         barraSuperior.add(selectorGrosor);
 
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/seleccion.png"))); // NOI18N
-        barraSuperior.add(jToggleButton1);
-
-        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/rellenar.png"))); // NOI18N
-        barraSuperior.add(jToggleButton2);
-
-        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/transparencia.png"))); // NOI18N
-        barraSuperior.add(jToggleButton3);
-
-        jToggleButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/alisar.png"))); // NOI18N
-        barraSuperior.add(jToggleButton4);
-
-        getContentPane().add(barraSuperior, java.awt.BorderLayout.PAGE_START);
-
-        barraInferior.setLayout(new java.awt.BorderLayout());
-
-        herramientasInferior.setRollover(true);
-
-        selectorModos.setLayout(new java.awt.GridLayout(2, 0));
-
-        modoRelleno.setText("Relleno");
-        modoRelleno.setFocusable(false);
-        modoRelleno.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        modoRelleno.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        modoRelleno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modoRellenoActionPerformed(evt);
-            }
-        });
-        selectorModos.add(modoRelleno);
-
-        modoTransparencia.setText("Transparencia");
-        modoTransparencia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modoTransparenciaActionPerformed(evt);
-            }
-        });
-        selectorModos.add(modoTransparencia);
-
-        modoAlisar.setText("Alisar");
-        modoAlisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modoAlisarActionPerformed(evt);
-            }
-        });
-        selectorModos.add(modoAlisar);
-
-        modoEditar.setText("Editar");
+        modoEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/seleccion.png"))); // NOI18N
         modoEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 modoEditarActionPerformed(evt);
             }
         });
-        selectorModos.add(modoEditar);
+        barraSuperior.add(modoEditar);
 
-        herramientasInferior.add(selectorModos);
+        modoRelleno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/rellenar.png"))); // NOI18N
+        modoRelleno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modoRellenoActionPerformed(evt);
+            }
+        });
+        barraSuperior.add(modoRelleno);
 
-        barraInferior.add(herramientasInferior, java.awt.BorderLayout.CENTER);
+        modoTransparencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/transparencia.png"))); // NOI18N
+        modoTransparencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modoTransparenciaActionPerformed(evt);
+            }
+        });
+        barraSuperior.add(modoTransparencia);
+
+        modoAlisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/alisar.png"))); // NOI18N
+        modoAlisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modoAlisarActionPerformed(evt);
+            }
+        });
+        barraSuperior.add(modoAlisar);
+
+        getContentPane().add(barraSuperior, java.awt.BorderLayout.PAGE_START);
+
+        barraInferior.setLayout(new java.awt.BorderLayout());
 
         barraEstado.setText("Hola");
         barraEstado.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -292,7 +262,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     /**
      * Para limpiar la pantalla generamos un punto en una posición del lienzo
      * que no sea visible, y la establecemos como punto inicial y final de una 
@@ -304,6 +274,15 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         lienzos.get(lienzos.size()-1).setVisible(true);
         
         ventanaActiva=lienzos.get(lienzos.size()-1);
+        ventanaActiva.addInternalFrameListener(manejador);
+        
+        cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
+        cambiarEstadoPropiedades(ventanaActiva.getLienzo().isEditar(),
+                                    ventanaActiva.getLienzo().isAlisado(),
+                                    ventanaActiva.getLienzo().isTransparencia(),
+                                    ventanaActiva.getLienzo().isRelleno());
+
+        seleccionarColor((Color)ventanaActiva.getLienzo().getColor());
     }//GEN-LAST:event_opcionNuevoActionPerformed
 
     /**
@@ -319,15 +298,11 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private void modoPuntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoPuntoActionPerformed
         obtenerVentanaActiva();
         
-        if(ventanaActiva!=null)
+        if(ventanaActiva!=null){
             ventanaActiva.setHerramienta(Herramientas.Punto);
-        
-        modoLinea.setSelected(false);
-        modoRectangulo.setSelected(false);
-        modoElipse.setSelected(false);
-        modoPunto.setSelected(true);
-        
-        barraEstado.setText("Modo punto");
+            cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
+        }
+            
     }//GEN-LAST:event_modoPuntoActionPerformed
 
     /**
@@ -343,15 +318,11 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private void modoLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoLineaActionPerformed
         obtenerVentanaActiva();
         
-        if(ventanaActiva!=null)
+        if(ventanaActiva!=null){
             ventanaActiva.setHerramienta(Herramientas.Linea);
+            cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
+        }
         
-        modoPunto.setSelected(false);
-        modoRectangulo.setSelected(false);
-        modoElipse.setSelected(false);
-        modoLinea.setSelected(true);
-        
-        barraEstado.setText("Modo línea");
     }//GEN-LAST:event_modoLineaActionPerformed
 
     /**
@@ -367,15 +338,10 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private void modoRectanguloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoRectanguloActionPerformed
         obtenerVentanaActiva();
         
-        if(ventanaActiva!=null)
+        if(ventanaActiva!=null){
             ventanaActiva.setHerramienta(Herramientas.Cuadrado);
-        
-        modoPunto.setSelected(false);
-        modoLinea.setSelected(false);
-        modoElipse.setSelected(false);
-        modoRectangulo.setSelected(true);
-        
-        barraEstado.setText("Modo rectángulo");
+            cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
+        }
     }//GEN-LAST:event_modoRectanguloActionPerformed
 
     /**
@@ -391,33 +357,11 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private void modoElipseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoElipseActionPerformed
         obtenerVentanaActiva();
         
-        if(ventanaActiva!=null)
-            ventanaActiva.setHerramienta(Herramientas.Ovalo);
-        
-        modoPunto.setSelected(false);
-        modoLinea.setSelected(false);
-        modoRectangulo.setSelected(false);
-        modoElipse.setSelected(true);
-                
-        barraEstado.setText("Modo elipse");
-    }//GEN-LAST:event_modoElipseActionPerformed
-
-    /**
-     * Acciones realizadas al marcar/desmarcar la casilla del modo relleno.
-     * 
-     * @param evt 
-     */
-    private void modoRellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoRellenoActionPerformed
-        obtenerVentanaActiva();
-        
         if(ventanaActiva!=null){
-            ventanaActiva.setRelleno(!ventanaActiva.isRelleno());
-            if(ventanaActiva.isRelleno())
-                barraEstado.setText("Relleno activado");
-            else
-                barraEstado.setText("Relleno desactivado");
+            ventanaActiva.setHerramienta(Herramientas.Ovalo);
+            cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
         }
-    }//GEN-LAST:event_modoRellenoActionPerformed
+    }//GEN-LAST:event_modoElipseActionPerformed
 
     /**
      * Accion realizada al seleccionar en el menu de edición la visibilidad de 
@@ -466,6 +410,28 @@ public class MarcoPrincipal extends javax.swing.JFrame {
             ventanaActiva.setGrosor((int)selectorGrosor.getValue());
     }//GEN-LAST:event_selectorGrosorStateChanged
 
+    private void visibilidadBarraFormasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibilidadBarraFormasActionPerformed
+        modoPunto.setVisible(!modoPunto.isVisible());
+        modoLinea.setVisible(!modoLinea.isVisible());
+        modoRectangulo.setVisible(!modoRectangulo.isVisible());
+        modoElipse.setVisible(!modoElipse.isVisible());
+
+    }//GEN-LAST:event_visibilidadBarraFormasActionPerformed
+
+    private void visibilidadBarraAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibilidadBarraAtributosActionPerformed
+        modoEditar.setVisible(!modoEditar.isVisible());
+        modoAlisar.setVisible(!modoAlisar.isVisible());
+        modoRelleno.setVisible(!modoRelleno.isVisible());
+        modoTransparencia.setVisible(!modoTransparencia.isVisible());
+    }//GEN-LAST:event_visibilidadBarraAtributosActionPerformed
+
+    private void seleccionColoresItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_seleccionColoresItemStateChanged
+        obtenerVentanaActiva();
+        
+        if(ventanaActiva!=null)
+            ventanaActiva.setColor((Color)evt.getItem());
+    }//GEN-LAST:event_seleccionColoresItemStateChanged
+
     private void modoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoEditarActionPerformed
         obtenerVentanaActiva();
         
@@ -478,29 +444,17 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_modoEditarActionPerformed
 
-    private void visibilidadBarraFormasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibilidadBarraFormasActionPerformed
-        modoPunto.setVisible(!modoPunto.isVisible());
-        modoLinea.setVisible(!modoLinea.isVisible());
-        modoRectangulo.setVisible(!modoRectangulo.isVisible());
-        modoElipse.setVisible(!modoElipse.isVisible());
-
-    }//GEN-LAST:event_visibilidadBarraFormasActionPerformed
-
-    private void visibilidadBarraAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibilidadBarraAtributosActionPerformed
-        herramientasInferior.setVisible(!herramientasInferior.isVisible());
-    }//GEN-LAST:event_visibilidadBarraAtributosActionPerformed
-
-    private void modoAlisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoAlisarActionPerformed
+    private void modoRellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoRellenoActionPerformed
         obtenerVentanaActiva();
         
         if(ventanaActiva!=null){
-            ventanaActiva.setAlisado(!ventanaActiva.isAlisado());
-            if(ventanaActiva.isAlisado())
-                barraEstado.setText("Modo alisado activado");
+            ventanaActiva.setRelleno(!ventanaActiva.isRelleno());
+            if(ventanaActiva.isRelleno())
+                barraEstado.setText("Relleno activado");
             else
-                barraEstado.setText("Modo alisado desactivado");
+                barraEstado.setText("Relleno desactivado");
         }
-    }//GEN-LAST:event_modoAlisarActionPerformed
+    }//GEN-LAST:event_modoRellenoActionPerformed
 
     private void modoTransparenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoTransparenciaActionPerformed
         obtenerVentanaActiva();
@@ -514,46 +468,110 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_modoTransparenciaActionPerformed
 
-    private void seleccionColoresItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_seleccionColoresItemStateChanged
-        if(ventanaActiva!=null)
-            switch((String)evt.getItem()){
-                case "Negro":
-                    ventanaActiva.setColor(Color.BLACK);
-                break;
-
-                case "Rojo":
-                    ventanaActiva.setColor(Color.RED);
-                break;
-
-                case "Azul":
-                    ventanaActiva.setColor(Color.BLUE);
-                break;
-
-                case "Blanco":
-                    ventanaActiva.setColor(Color.WHITE);
-                break;
-
-                case "Amarillo":
-                    ventanaActiva.setColor(Color.YELLOW);
-                break;
-
-                case "Verde":
-                    ventanaActiva.setColor(Color.GREEN);
-                break;
-            }
-    }//GEN-LAST:event_seleccionColoresItemStateChanged
-    
+    private void modoAlisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoAlisarActionPerformed
+        obtenerVentanaActiva();
+        
+        if(ventanaActiva!=null){
+            ventanaActiva.setAlisado(!ventanaActiva.isAlisado());
+            if(ventanaActiva.isAlisado())
+                barraEstado.setText("Modo alisado activado");
+            else
+                barraEstado.setText("Modo alisado desactivado");
+        }
+    }//GEN-LAST:event_modoAlisarActionPerformed
+   
     /**
      * Método para obtener cual de los marcos secundarios está activo. Si existe
      * algún cambio se cambian las propiedades de la ventana principal conforme
      * a lo que tenga almacenado la ventana secundaria
      */
-    private void obtenerVentanaActiva(){
-        ventanaActiva=(MarcoSecundario)escritorio.getSelectedFrame();
+    private void obtenerVentanaActiva(){    
+        if(ventanaActiva!=null){
+            ventanaActiva=(MarcoSecundario)escritorio.getSelectedFrame();
+        }
+    }
+    
+    /**
+     * Clase manejadora de eventos del lienzo en MarcoPrincipal.
+     */
+    
+    public class MiManejador extends InternalFrameAdapter{
+        
+        @Override
+        public void internalFrameActivated(InternalFrameEvent evt){
+            ventanaActiva=(MarcoSecundario)evt.getInternalFrame();
+            
+            cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
+            
+            cambiarEstadoPropiedades(ventanaActiva.getLienzo().isEditar(),
+                                     ventanaActiva.getLienzo().isAlisado(),
+                                     ventanaActiva.getLienzo().isTransparencia(),
+                                     ventanaActiva.getLienzo().isRelleno());
+            
+            seleccionarColor((Color)ventanaActiva.getLienzo().getColor());
+            
+            cambiarValorGrosor(ventanaActiva.getLienzo().getGrosor());
+        }
+    }
+    
+    public void cambiarEstadoHerramientas(Herramientas h){
+        switch(h){
+            case Punto:
+                modoLinea.setSelected(false);
+                modoRectangulo.setSelected(false);
+                modoElipse.setSelected(false);
+                modoPunto.setSelected(true);
+
+                barraEstado.setText("Modo punto");
+            break;
+
+            case Linea:
+
+                modoPunto.setSelected(false);
+                modoRectangulo.setSelected(false);
+                modoElipse.setSelected(false);
+                modoLinea.setSelected(true);
+
+                barraEstado.setText("Modo línea");
+
+            break;
+
+            case Cuadrado:
+
+                modoPunto.setSelected(false);
+                modoLinea.setSelected(false);
+                modoElipse.setSelected(false);
+                modoRectangulo.setSelected(true);
+
+                barraEstado.setText("Modo rectángulo");
+
+            break;
+
+            case Ovalo:
+                modoPunto.setSelected(false);
+                modoLinea.setSelected(false);
+                modoRectangulo.setSelected(false);
+                modoElipse.setSelected(true);
+
+                barraEstado.setText("Modo elipse");
+            break;
+        }
+    }
+    
+    public void cambiarEstadoPropiedades(boolean e, boolean t, boolean a, boolean r){
+        modoRelleno.setSelected(r);
+        modoAlisar.setSelected(a);
+        modoTransparencia.setSelected(t);
+        modoEditar.setSelected(e);
+        
     }
 
-    public void setSelectorGrosor(int i) {
-        this.selectorGrosor.setValue((int)i);
+    public void seleccionarColor(Color c){
+        this.seleccionColores.setSelectedItem((Color)c);
+    }
+    
+    public void cambiarValorGrosor(BasicStroke i){
+        selectorGrosor.setValue(i);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -562,33 +580,27 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar barraMenu;
     private javax.swing.JPanel barraSuperior;
     private javax.swing.JDesktopPane escritorio;
-    private javax.swing.JToolBar herramientasInferior;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JToggleButton jToggleButton3;
-    private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JMenu menuArchivo;
     private javax.swing.JMenu menuEdicion;
-    private javax.swing.JCheckBox modoAlisar;
-    private javax.swing.JCheckBox modoEditar;
+    private javax.swing.JToggleButton modoAlisar;
+    private javax.swing.JToggleButton modoEditar;
     private javax.swing.JToggleButton modoElipse;
     private javax.swing.JToggleButton modoLinea;
     private javax.swing.JToggleButton modoPunto;
     private javax.swing.JToggleButton modoRectangulo;
-    private javax.swing.JCheckBox modoRelleno;
-    private javax.swing.JCheckBox modoTransparencia;
+    private javax.swing.JToggleButton modoRelleno;
+    private javax.swing.JToggleButton modoTransparencia;
     private javax.swing.JMenuItem opcionAbrir;
     private javax.swing.JMenuItem opcionGuardar;
     private javax.swing.JMenuItem opcionNuevo;
-    private javax.swing.JComboBox seleccionColores;
+    private javax.swing.JComboBox<Color> seleccionColores;
     private javax.swing.JSpinner selectorGrosor;
-    private javax.swing.JPanel selectorModos;
     private javax.swing.JMenuItem visibilidadBarraAtributos;
     private javax.swing.JMenuItem visibilidadBarraEstado;
     private javax.swing.JMenuItem visibilidadBarraFormas;

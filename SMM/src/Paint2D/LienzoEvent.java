@@ -4,13 +4,18 @@
  * and open the template in the editor.
  */
 
-package paintbasico2d;
+package Paint2D;
+
+import java.util.EventObject;
 
 /**
  *
  * @author curro
  */
-public class LienzoAdapter implements LienzoListener{
-    
+public class LienzoEvent extends EventObject{
+
+    public LienzoEvent(Object o) {
+        super(o);
+    }
     
 }

@@ -1,4 +1,4 @@
-package paintbasico2d;
+package Paint2D;
 
 /**
  *

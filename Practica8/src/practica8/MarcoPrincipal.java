@@ -1,10 +1,10 @@
-package paintbasico2d;
+package practica8;
 
-import java.awt.BasicStroke;
+import Paint2D.Herramientas;
+import Paint2D.MiCellRenderer;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
-import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -19,12 +19,13 @@ public class MarcoPrincipal extends javax.swing.JFrame {
      * Atributos de la ventana principal
      */
     private MarcoSecundario ventanaActiva;
+    private ArrayList<MarcoSecundario> lienzos=new ArrayList();
+    
     private MiManejador manejador=new MiManejador();
     
     /**
      * Creates new form MarcoPrincipal
      */
-    private ArrayList<MarcoSecundario> lienzos=new ArrayList();
    
     public MarcoPrincipal() {
         initComponents();
@@ -40,9 +41,9 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         barraSuperior = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        botonNuevo = new javax.swing.JButton();
+        botonAbrir = new javax.swing.JButton();
+        botonGuardar = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         modoPunto = new javax.swing.JToggleButton();
         modoLinea = new javax.swing.JToggleButton();
@@ -73,15 +74,30 @@ public class MarcoPrincipal extends javax.swing.JFrame {
 
         barraSuperior.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/nuevo.png"))); // NOI18N
-        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        barraSuperior.add(jButton1);
+        botonNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/nuevo.png"))); // NOI18N
+        botonNuevo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        botonNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonNuevoActionPerformed(evt);
+            }
+        });
+        barraSuperior.add(botonNuevo);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/abrir.png"))); // NOI18N
-        barraSuperior.add(jButton2);
+        botonAbrir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/abrir.png"))); // NOI18N
+        botonAbrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAbrirActionPerformed(evt);
+            }
+        });
+        barraSuperior.add(botonAbrir);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/guardar.png"))); // NOI18N
-        barraSuperior.add(jButton3);
+        botonGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/guardar.png"))); // NOI18N
+        botonGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonGuardarActionPerformed(evt);
+            }
+        });
+        barraSuperior.add(botonGuardar);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jSeparator1.setPreferredSize(new java.awt.Dimension(2, 50));
@@ -264,10 +280,14 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     /**
-     * Para limpiar la pantalla generamos un punto en una posición del lienzo
-     * que no sea visible, y la establecemos como punto inicial y final de una 
-     * figura.
-    */
+     * Se crea un nuevo MarcoSecundario, se añade a un vector donde se 
+     * almacenarán todas las ventanas internas generadas y se establece el 
+     * estado de los botones del MarcoPrimario respecto a las propiedades de 
+     * inicio del lienzo.
+     * 
+     * Además, se añade al MarcoSecundario un manejador de eventos, el cual 
+     * viene explicado en el lugar donde se define su clase.
+     */
     private void opcionNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionNuevoActionPerformed
         lienzos.add(new MarcoSecundario());
         escritorio.add(lienzos.get(lienzos.size()-1));
@@ -276,90 +296,79 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         ventanaActiva=lienzos.get(lienzos.size()-1);
         ventanaActiva.addInternalFrameListener(manejador);
         
-        cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
+        cambiarEstadoHerramientas(ventanaActiva.getLienzo().getHerramienta());
+        
         cambiarEstadoPropiedades(ventanaActiva.getLienzo().isEditar(),
-                                    ventanaActiva.getLienzo().isAlisado(),
-                                    ventanaActiva.getLienzo().isTransparencia(),
-                                    ventanaActiva.getLienzo().isRelleno());
+                                 ventanaActiva.getLienzo().isAlisado(),
+                                 ventanaActiva.getLienzo().isTransparencia(),
+                                 ventanaActiva.getLienzo().isRelleno());
 
         seleccionarColor((Color)ventanaActiva.getLienzo().getColor());
+        
+        cambiarValorGrosor(ventanaActiva.getLienzo().getGrosor());
     }//GEN-LAST:event_opcionNuevoActionPerformed
 
     /**
      * Acciones realizadas al seleccionar en la barra de herramientas el modo
-     * punto. A parte de modificar el atributo herramienta de la clase lienzo,
-     * se modifica el atributo de selección de los botones de herramientas, evitando que esten 
-     * dos o más seleccionados, o que si se pulsa dos veces el mismo no se 
-     * deseleccione el botón de la herramienta actual, indicando de manera clara
-     * cual es la forma de dibujo seleccionada.
+     * punto. Primero se cambia en el objeto lienzo de la ventanaActiva
+     * el atributo herramienta, y después se cambia el estado de la sección de 
+     * herramientas del MarcoPrincipal para que concuerde con el elemento 
+     * seleccionado.
      *
      * @param evt 
      */
     private void modoPuntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoPuntoActionPerformed
-        obtenerVentanaActiva();
-        
         if(ventanaActiva!=null){
-            ventanaActiva.setHerramienta(Herramientas.Punto);
-            cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
-        }
-            
+            ventanaActiva.getLienzo().setHerramienta(Herramientas.Punto);
+            cambiarEstadoHerramientas(ventanaActiva.getLienzo().getHerramienta());
+        } 
     }//GEN-LAST:event_modoPuntoActionPerformed
 
     /**
      * Acciones realizadas al seleccionar en la barra de herramientas el modo
-     * línea. A parte de modificar el atributo herramienta de la clase lienzo,
-     * se modifica el atributo de selección de los botones de herramientas, evitando que esten 
-     * dos o más seleccionados, o que si se pulsa dos veces el mismo no se 
-     * deseleccione el botón de la herramienta actual, indicando de manera clara
-     * cual es la forma de dibujo seleccionada.
+     * línea. Primero se cambia en el objeto lienzo de la ventanaActiva
+     * el atributo herramienta, y después se cambia el estado de la sección de 
+     * herramientas del MarcoPrincipal para que concuerde con el elemento 
+     * seleccionado.
      * 
      * @param evt 
      */
     private void modoLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoLineaActionPerformed
-        obtenerVentanaActiva();
-        
         if(ventanaActiva!=null){
-            ventanaActiva.setHerramienta(Herramientas.Linea);
-            cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
+            ventanaActiva.getLienzo().setHerramienta(Herramientas.Linea);
+            cambiarEstadoHerramientas(ventanaActiva.getLienzo().getHerramienta());
         }
-        
     }//GEN-LAST:event_modoLineaActionPerformed
 
     /**
      * Acciones realizadas al seleccionar en la barra de herramientas el modo
-     * rectángulo. A parte de modificar el atributo herramienta de la clase lienzo,
-     * se modifica el atributo de selección de los botones de herramientas, evitando que esten 
-     * dos o más seleccionados, o que si se pulsa dos veces el mismo no se 
-     * deseleccione el botón de la herramienta actual, indicando de manera clara
-     * cual es la forma de dibujo seleccionada.
+     * rectángulo. Primero se cambia en el objeto lienzo de la ventanaActiva
+     * el atributo herramienta, y después se cambia el estado de la sección de 
+     * herramientas del MarcoPrincipal para que concuerde con el elemento 
+     * seleccionado.
      * 
      * @param evt 
      */
     private void modoRectanguloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoRectanguloActionPerformed
-        obtenerVentanaActiva();
-        
         if(ventanaActiva!=null){
-            ventanaActiva.setHerramienta(Herramientas.Cuadrado);
-            cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
+            ventanaActiva.getLienzo().setHerramienta(Herramientas.Cuadrado);
+            cambiarEstadoHerramientas(ventanaActiva.getLienzo().getHerramienta());
         }
     }//GEN-LAST:event_modoRectanguloActionPerformed
 
     /**
      * Acciones realizadas al seleccionar en la barra de herramientas el modo
-     * elipse/óvalo. A parte de modificar el atributo herramienta de la clase lienzo,
-     * se modifica el atributo de selección de los botones de herramientas, evitando que esten 
-     * dos o más seleccionados, o que si se pulsa dos veces el mismo no se 
-     * deseleccione el botón de la herramienta actual, indicando de manera clara
-     * cual es la forma de dibujo seleccionada.
+     * elipse/óvalo. Primero se cambia en el objeto lienzo de la ventanaActiva
+     * el atributo herramienta, y después se cambia el estado de la sección de 
+     * herramientas del MarcoPrincipal para que concuerde con el elemento 
+     * seleccionado.
      * 
      * @param evt 
      */
     private void modoElipseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoElipseActionPerformed
-        obtenerVentanaActiva();
-        
         if(ventanaActiva!=null){
-            ventanaActiva.setHerramienta(Herramientas.Ovalo);
-            cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
+            ventanaActiva.getLienzo().setHerramienta(Herramientas.Ovalo);
+            cambiarEstadoHerramientas(ventanaActiva.getLienzo().getHerramienta());
         }
     }//GEN-LAST:event_modoElipseActionPerformed
 
@@ -403,21 +412,31 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_opcionGuardarActionPerformed
 
+    /**
+     * Método para recoger el valor del selector de grosor tras realizarse un 
+     * cambio sobre el; y enviarlo a la ventana interna activa en ese momento.
+     * @param evt 
+     */
     private void selectorGrosorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_selectorGrosorStateChanged
-        obtenerVentanaActiva();
-        
         if(ventanaActiva!=null)
-            ventanaActiva.setGrosor((int)selectorGrosor.getValue());
+            ventanaActiva.getLienzo().setGrosor((int)selectorGrosor.getValue());
     }//GEN-LAST:event_selectorGrosorStateChanged
 
+    /**
+     * Método para ocultar los botones de selección de formas.
+     * @param evt 
+     */
     private void visibilidadBarraFormasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibilidadBarraFormasActionPerformed
         modoPunto.setVisible(!modoPunto.isVisible());
         modoLinea.setVisible(!modoLinea.isVisible());
         modoRectangulo.setVisible(!modoRectangulo.isVisible());
         modoElipse.setVisible(!modoElipse.isVisible());
-
     }//GEN-LAST:event_visibilidadBarraFormasActionPerformed
 
+    /**
+     * Método para ocultar los botones de selección de atributos.
+     * @param evt 
+     */
     private void visibilidadBarraAtributosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visibilidadBarraAtributosActionPerformed
         modoEditar.setVisible(!modoEditar.isVisible());
         modoAlisar.setVisible(!modoAlisar.isVisible());
@@ -425,83 +444,103 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         modoTransparencia.setVisible(!modoTransparencia.isVisible());
     }//GEN-LAST:event_visibilidadBarraAtributosActionPerformed
 
+    /**
+     * Método que establece al lienzo el atributo color, seleccionado en el menú
+     * desplegable.
+     * @param evt 
+     */
     private void seleccionColoresItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_seleccionColoresItemStateChanged
-        obtenerVentanaActiva();
-        
         if(ventanaActiva!=null)
-            ventanaActiva.setColor((Color)evt.getItem());
+            ventanaActiva.getLienzo().setColor((Color)evt.getItem());
     }//GEN-LAST:event_seleccionColoresItemStateChanged
 
+    /**
+     * Método que establece las acciones a realizar cuando se actua sobre el 
+     * botón correspondiente al modo editar
+     * @param evt 
+     */
     private void modoEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoEditarActionPerformed
-        obtenerVentanaActiva();
-        
         if(ventanaActiva!=null){
-            ventanaActiva.setEditar(!ventanaActiva.isEditar());
-            if(ventanaActiva.isEditar())
+            ventanaActiva.getLienzo().setEditar(!ventanaActiva.getLienzo().isEditar());
+            if(ventanaActiva.getLienzo().isEditar())
                 barraEstado.setText("Modo editar activado");
             else
                 barraEstado.setText("Modo editar desactivado");
         }
     }//GEN-LAST:event_modoEditarActionPerformed
 
+    /**
+     * Método que establece las acciones a realizar cuando se actua sobre el 
+     * botón correspondiente al modo relleno
+     * @param evt 
+     */
     private void modoRellenoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoRellenoActionPerformed
-        obtenerVentanaActiva();
-        
         if(ventanaActiva!=null){
-            ventanaActiva.setRelleno(!ventanaActiva.isRelleno());
-            if(ventanaActiva.isRelleno())
+            ventanaActiva.getLienzo().setRelleno(!ventanaActiva.getLienzo().isRelleno());
+            if(ventanaActiva.getLienzo().isRelleno())
                 barraEstado.setText("Relleno activado");
             else
                 barraEstado.setText("Relleno desactivado");
         }
     }//GEN-LAST:event_modoRellenoActionPerformed
 
+    /**
+     * Método que establece las acciones a realizar cuando se actua sobre el 
+     * botón correspondiente al modo transparencia
+     * @param evt 
+     */
     private void modoTransparenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoTransparenciaActionPerformed
-        obtenerVentanaActiva();
+        
         
         if(ventanaActiva!=null){
-            ventanaActiva.setTransparencia(!ventanaActiva.isTransparencia());
-            if(ventanaActiva.isTransparencia())
+            ventanaActiva.getLienzo().setTransparencia(!ventanaActiva.getLienzo().isTransparencia());
+            if(ventanaActiva.getLienzo().isTransparencia())
                 barraEstado.setText("Modo transparencia activado");
             else
                 barraEstado.setText("Modo transparencia desactivado");
         }
     }//GEN-LAST:event_modoTransparenciaActionPerformed
 
+    /**
+     * Método que establece las acciones a realizar cuando se actua sobre el 
+     * botón correspondiente al modo alisar
+     * @param evt 
+     */
     private void modoAlisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modoAlisarActionPerformed
-        obtenerVentanaActiva();
-        
         if(ventanaActiva!=null){
-            ventanaActiva.setAlisado(!ventanaActiva.isAlisado());
-            if(ventanaActiva.isAlisado())
+            ventanaActiva.getLienzo().setAlisado(!ventanaActiva.getLienzo().isAlisado());
+            if(ventanaActiva.getLienzo().isAlisado())
                 barraEstado.setText("Modo alisado activado");
             else
                 barraEstado.setText("Modo alisado desactivado");
         }
     }//GEN-LAST:event_modoAlisarActionPerformed
-   
-    /**
-     * Método para obtener cual de los marcos secundarios está activo. Si existe
-     * algún cambio se cambian las propiedades de la ventana principal conforme
-     * a lo que tenga almacenado la ventana secundaria
-     */
-    private void obtenerVentanaActiva(){    
-        if(ventanaActiva!=null){
-            ventanaActiva=(MarcoSecundario)escritorio.getSelectedFrame();
-        }
-    }
+
+    private void botonNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonNuevoActionPerformed
+        opcionNuevoActionPerformed(evt);
+    }//GEN-LAST:event_botonNuevoActionPerformed
+
+    private void botonAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAbrirActionPerformed
+        opcionAbrirActionPerformed(evt);
+    }//GEN-LAST:event_botonAbrirActionPerformed
+
+    private void botonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarActionPerformed
+        opcionGuardarActionPerformed(evt);
+    }//GEN-LAST:event_botonGuardarActionPerformed
     
     /**
-     * Clase manejadora de eventos del lienzo en MarcoPrincipal.
+     * Clase manejadora de eventos del lienzo en MarcoPrincipal. Con este 
+     * manejador, controlaremos cual es la ventana interna activa en cada 
+     * momento de la ejecución, estableciendo los cambios necesarios cuando la
+     * ventana interna activada pase a ser otra distinta.
      */
-    
     public class MiManejador extends InternalFrameAdapter{
         
         @Override
         public void internalFrameActivated(InternalFrameEvent evt){
             ventanaActiva=(MarcoSecundario)evt.getInternalFrame();
             
-            cambiarEstadoHerramientas(ventanaActiva.getHerramienta());
+            cambiarEstadoHerramientas(ventanaActiva.getLienzo().getHerramienta());
             
             cambiarEstadoPropiedades(ventanaActiva.getLienzo().isEditar(),
                                      ventanaActiva.getLienzo().isAlisado(),
@@ -513,6 +552,14 @@ public class MarcoPrincipal extends javax.swing.JFrame {
             cambiarValorGrosor(ventanaActiva.getLienzo().getGrosor());
         }
     }
+    
+    /**
+     * Método para cambiar el estado de los botones correspondientes a
+     * una herramienta. Además, mostrará un mensaje en la barra de estado 
+     * notificando dicho cambio.
+     * @param h. Herramienta la cual queremos que su botón correspondiente sea
+     * seleccionado.
+     */
     
     public void cambiarEstadoHerramientas(Herramientas h){
         switch(h){
@@ -558,7 +605,15 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         }
     }
     
-    public void cambiarEstadoPropiedades(boolean e, boolean t, boolean a, boolean r){
+    /**
+     * Método para establecer el estado de los botones correspondientes a las 
+     * propiedades de las figuras dibujadas en un lienzo.
+     * @param e. Modo Editar activado/desactivado.
+     * @param a. Modo Alisar activado/desactivado.
+     * @param t. Modo Transparencia activado/desactivado.
+     * @param r. Modo Relleno activado/desactivado. 
+     */
+    public void cambiarEstadoPropiedades(boolean e, boolean a, boolean t, boolean r){
         modoRelleno.setSelected(r);
         modoAlisar.setSelected(a);
         modoTransparencia.setSelected(t);
@@ -566,11 +621,21 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         
     }
 
+    /**
+     * Método para establecer, dentro del combobox de selección de color, una de
+     * las opciones dentro de esta.
+     * @param c. Color a seleccionar en la lista de colores.
+     */
     public void seleccionarColor(Color c){
-        this.seleccionColores.setSelectedItem((Color)c);
+        seleccionColores.setSelectedItem((Color)c);
     }
     
-    public void cambiarValorGrosor(BasicStroke i){
+    /**
+     * Método para establecer en el selector de grosor, un valor i enviado como
+     * parámetro.
+     * @param i. Valor de grosor a establecer.
+     */
+    public void cambiarValorGrosor(int i){
         selectorGrosor.setValue(i);
     }
     
@@ -579,10 +644,10 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel barraInferior;
     private javax.swing.JMenuBar barraMenu;
     private javax.swing.JPanel barraSuperior;
+    private javax.swing.JButton botonAbrir;
+    private javax.swing.JButton botonGuardar;
+    private javax.swing.JButton botonNuevo;
     private javax.swing.JDesktopPane escritorio;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;

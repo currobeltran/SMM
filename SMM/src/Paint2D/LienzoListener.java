@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package paintbasico2d;
+package Paint2D;
 
 import java.util.EventListener;
 

@@ -4,15 +4,13 @@
  * and open the template in the editor.
  */
 
-package paintbasico2d;
-
-import Paint2D.MarcoPrincipal;
+package practica8;
 
 /**
  *
  * @author curro
  */
-public class PaintBasico2D {
+public class Practica8 {
 
     /**
      * @param args the command line arguments

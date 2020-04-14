@@ -1,4 +1,4 @@
-package paintbasico2d;
+package Paint2D;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -23,16 +23,13 @@ public class Lienzo extends javax.swing.JPanel {
     private Herramientas herramienta=Herramientas.Punto;
     private ArrayList<Shape> formas=new ArrayList();
     private Point2D p1;
-    private BasicStroke grosor=new BasicStroke(1);
+    private int grosor=1;
     private Paint color=Color.BLACK;
     private boolean relleno=false;
     private boolean editar=false;
     private boolean transparencia=false;
     private boolean alisado=false;
     private Shape formaSeleccionada=null;
-    
-    //Manejadores de lienzo
-    private ArrayList<LienzoListener> lienzoEventListeners=new ArrayList();
     
     //Getters y setters de los atributos de la clase
     
@@ -44,16 +41,24 @@ public class Lienzo extends javax.swing.JPanel {
         return herramienta;
     }
 
-    public void setGrosor(BasicStroke grosor) {
+    public void setGrosor(int grosor) {
         this.grosor = grosor;
         this.repaint();
     }
 
+    public int getGrosor() {
+        return grosor;
+    }
+    
     public void setColor(Paint color) {
         this.color = color;
         this.repaint();
     }
 
+    public Paint getColor() {
+        return color;
+    }
+    
     public void setRelleno(boolean relleno) {
         this.relleno = relleno;
         this.repaint();
@@ -76,27 +81,19 @@ public class Lienzo extends javax.swing.JPanel {
         this.repaint();
     }
 
+    public boolean isTransparencia() {
+        return transparencia;
+    }
+    
     public void setAlisado(boolean alisado) {
         this.alisado = alisado;
         this.repaint();
-    }
-
-    public boolean isTransparencia() {
-        return transparencia;
     }
 
     public boolean isAlisado() {
         return alisado;
     }
 
-    public Paint getColor() {
-        return color;
-    }
-
-    public BasicStroke getGrosor() {
-        return grosor;
-    }
-    
     /**
      * Creates new form Lienzo
      */
@@ -129,11 +126,36 @@ public class Lienzo extends javax.swing.JPanel {
         });
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Al presionar con el raton en el lienzo, dependiendo del modo, pueden 
+     * ocurrir dos cosas:
+     *      - Se crea una nueva figura si no estamos en modo editar dependiendo
+     *      de cual sea la herramienta seleccionada
+     *      - Se selecciona la figura que este situada en el punto donde se haya
+     *      generado el evento
+     * @param evt 
+     */
+    
     private void formMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMousePressed
-        createShape(evt);
+        if(!editar)
+            createShape(evt);
+        else
+            formaSeleccionada=setSelectedShape(evt.getPoint());
         this.repaint();    
     }//GEN-LAST:event_formMousePressed
 
+    /**
+     * En los dos eventos siguientes, se llama a la misma funcion, la cual se 
+     * encarga de actualizar una figura ya creada. Dependiendo del modo, pueden
+     * ocurrir dos cosas:
+     *      - Si el modo editar esta activado, la figura seleccionada se 
+     *      desplazará al lugar donde llevemos el raton.
+     *      - En cambio, si este modo está desactivado, la figura que se creó 
+     *      anteriormente al presionar cambiará de forma dependiendo del tipo 
+     *      que sea.
+     * @param evt 
+     */
+    
     private void formMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseDragged
         updateShape(evt);
         this.repaint();
@@ -147,28 +169,24 @@ public class Lienzo extends javax.swing.JPanel {
     private void createShape(java.awt.event.MouseEvent evt){
         p1=evt.getPoint();
         
-        if(!editar)
-            switch(herramienta){
-                case Punto:
-                    formas.add(new MiLinea2D(evt.getPoint(), evt.getPoint()));
-                break;
+        switch(herramienta){
+            case Punto:
+                formas.add(new MiLinea2D(evt.getPoint(), evt.getPoint()));
+            break;
 
-                case Linea:
-                    formas.add(new MiLinea2D(evt.getPoint(), evt.getPoint()));
-                break;
+            case Linea:
+                formas.add(new MiLinea2D(evt.getPoint(), evt.getPoint()));
+            break;
 
-                case Cuadrado:
-                    formas.add(new Rectangle(evt.getX(), evt.getY(), 0, 0));
-                break;
+            case Cuadrado:
+                formas.add(new Rectangle(evt.getX(), evt.getY(), 0, 0));
+            break;
 
-                case Ovalo:
-                    formas.add(new MiElipse2D(evt.getPoint(), 0, 0));
-                break;
-            }
-        
-        else{
-            formaSeleccionada=setSelectedShape(evt.getPoint());
+            case Ovalo:
+                formas.add(new MiElipse2D(evt.getPoint(), 0, 0));
+            break;
         }
+        
     }
     
     private void updateShape(java.awt.event.MouseEvent evt){
@@ -196,6 +214,14 @@ public class Lienzo extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Método que revisa si alguna figura del vector de formas del lienzo 
+     * contiene el Point2D enviado como argumento.
+     * @param p. Punto que debe contener la figura a seleccionar.
+     * @return Shape s que contenga el punto, si no existen coincidencias 
+     * devuelve null
+     */
+    
     private Shape setSelectedShape(Point2D p){
         for (Shape s : formas){
             if(s.contains(p)){
@@ -204,6 +230,16 @@ public class Lienzo extends javax.swing.JPanel {
         }
         return null;
     }
+    
+    /**
+     * Método para cambiar la posicion de una forma a un punto enviado como 
+     * parámetro. 
+     * @param s. Forma a la cual queremos cambiarle la posición. Al ser un 
+     * argumento de tipo Shape, dentro del método tenemos que averiguar su tipo 
+     * específico para aplicar el método setLocation específico de la clase a la
+     * que pertenece.
+     * @param pos. Punto donde queremos desplazar la forma s.
+     */
     
     private void setLocation(Shape s, Point2D pos){
         if(s instanceof MiLinea2D){
@@ -218,30 +254,6 @@ public class Lienzo extends javax.swing.JPanel {
     }
     
     /**
-     * Añade un nuevo manejador a la lista de manejadores del lienzo
-     * @param listener: Nuevo manejador a añadir
-     */
-    
-    public void addLienzoListener(LienzoListener listener){
-        if(listener!=null){
-            lienzoEventListeners.add(listener);
-        }
-    }
-    
-    /**
-     * Notificadores de eventos manejados por la clase
-     * @param evt 
-     */
-    
-    private void notify(LienzoEvent evt){
-        if(!lienzoEventListeners.isEmpty()){
-            for(LienzoListener listener : lienzoEventListeners){
-                
-            }
-        }
-    }
-    
-    /**
      * Método que pinta los elementos que contenga el vector de formas
      * de la clase.
      * @param g 
@@ -250,10 +262,9 @@ public class Lienzo extends javax.swing.JPanel {
     @Override
     public void paint(Graphics g){
         super.paint(g);
-        
         Graphics2D g2d=(Graphics2D)g; 
         
-        if(transparencia && relleno){
+        if(transparencia){
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
         }
         else{            
@@ -269,7 +280,7 @@ public class Lienzo extends javax.swing.JPanel {
         
         g2d.setPaint(color);
         
-        g2d.setStroke(grosor);
+        g2d.setStroke(new BasicStroke(grosor));
          
         for(Shape s : formas){
             if(relleno)

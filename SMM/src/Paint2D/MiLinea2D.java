@@ -15,11 +15,11 @@ import java.awt.geom.Point2D;
  */
 public class MiLinea2D extends Line2D.Double{
 
-    MiLinea2D(){
+    public MiLinea2D(){
         super();
     }
     
-    MiLinea2D(Point2D point, Point2D point0) {
+    public MiLinea2D(Point2D point, Point2D point0) {
         super(point,point0);
     }
     

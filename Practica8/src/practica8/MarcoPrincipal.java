@@ -1,10 +1,13 @@
 package practica8;
 
 import Paint2D.Herramientas;
+import Paint2D.MiBufferedImage;
 import Paint2D.MiCellRenderer;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -306,6 +309,9 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         seleccionarColor((Color)ventanaActiva.getLienzo().getColor());
         
         cambiarValorGrosor(ventanaActiva.getLienzo().getGrosor());
+        
+        MiBufferedImage img=new MiBufferedImage(300,300,BufferedImage.TYPE_INT_RGB);
+        ventanaActiva.getLienzo().setImagenFondo(img);
     }//GEN-LAST:event_opcionNuevoActionPerformed
 
     /**
@@ -393,7 +399,16 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         JFileChooser dlg=new JFileChooser();
         int resp=dlg.showOpenDialog(this);
         if(resp==JFileChooser.APPROVE_OPTION){
-            File f =dlg.getSelectedFile();
+            try{
+                File f =dlg.getSelectedFile();
+                BufferedImage img=ImageIO.read(f);
+                opcionNuevoActionPerformed(evt);
+                ventanaActiva.getLienzo().setImagenFondo(img);
+                ventanaActiva.setName(f.getName());
+            }
+            catch(Exception ex){
+                System.err.println("Error al leer la imagen");
+            }
         }
     }//GEN-LAST:event_opcionAbrirActionPerformed
 
@@ -405,10 +420,24 @@ public class MarcoPrincipal extends javax.swing.JFrame {
      * @param evt 
      */
     private void opcionGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionGuardarActionPerformed
-        JFileChooser dlg=new JFileChooser();
-        int resp=dlg.showSaveDialog(this);
-        if(resp==JFileChooser.APPROVE_OPTION){
-            File f =dlg.getSelectedFile();
+        if(ventanaActiva!=null){
+            BufferedImage img=ventanaActiva.getLienzo().getImagenFondo(true);
+            
+            if(img!=null){
+                JFileChooser dlg=new JFileChooser();
+                int resp=dlg.showSaveDialog(this);
+                
+                if(resp==JFileChooser.APPROVE_OPTION){
+                    try{
+                        File f =dlg.getSelectedFile();
+                        ImageIO.write(img,"jpg",f);
+                        ventanaActiva.setTitle(f.getName());
+                    }
+                    catch(Exception ex){
+                        System.err.println("Error al guardar imagen");
+                    }
+                }
+            }
         }
     }//GEN-LAST:event_opcionGuardarActionPerformed
 

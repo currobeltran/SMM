@@ -16,11 +16,11 @@ import java.awt.geom.Rectangle2D;
  */
 public class MiElipse2D extends Ellipse2D.Double{
     
-    MiElipse2D(){
+    public MiElipse2D(){
         super();
     }
 
-    MiElipse2D(Point2D p, int i, int i0) {
+    public MiElipse2D(Point2D p, int i, int i0) {
         super(p.getX(),p.getY(),i,i0);
     }
     

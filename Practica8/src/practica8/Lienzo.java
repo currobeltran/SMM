@@ -1,8 +1,13 @@
-package Paint2D;
+package practica8;
 
+import Paint2D.*;
+import Paint2D.Herramientas;
+import Paint2D.MiElipse2D;
+import Paint2D.MiLinea2D;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -11,6 +16,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -30,6 +36,7 @@ public class Lienzo extends javax.swing.JPanel {
     private boolean transparencia=false;
     private boolean alisado=false;
     private Shape formaSeleccionada=null;
+    private BufferedImage imagenFondo;
     
     //Getters y setters de los atributos de la clase
     
@@ -92,6 +99,33 @@ public class Lienzo extends javax.swing.JPanel {
 
     public boolean isAlisado() {
         return alisado;
+    }
+
+    public BufferedImage getImagenFondo(boolean drawVector) {
+        if(drawVector){
+            BufferedImage imgout=new BufferedImage(imagenFondo.getWidth(),
+                                                   imagenFondo.getHeight(),
+                                                   imagenFondo.getType());
+            
+            boolean opacoActual=this.isOpaque();
+            if(imagenFondo.getColorModel().hasAlpha()){
+                this.setOpaque(false);
+            }
+            
+            this.paint(imgout.createGraphics());
+            this.setOpaque(opacoActual);
+            return(imgout);
+        }
+        
+        else
+            return imagenFondo;
+    }
+
+    public void setImagenFondo(BufferedImage imagenFondo) {
+        this.imagenFondo = imagenFondo;
+        if(imagenFondo!=null){
+            setPreferredSize(new Dimension(imagenFondo.getWidth(),imagenFondo.getHeight()));
+        }
     }
 
     /**
@@ -253,6 +287,8 @@ public class Lienzo extends javax.swing.JPanel {
         }
     }
     
+    
+    
     /**
      * Método que pinta los elementos que contenga el vector de formas
      * de la clase.
@@ -263,6 +299,10 @@ public class Lienzo extends javax.swing.JPanel {
     public void paint(Graphics g){
         super.paint(g);
         Graphics2D g2d=(Graphics2D)g; 
+        
+        if(imagenFondo!=null){
+            g2d.drawImage(imagenFondo, 0, 0, this);
+        }
         
         if(transparencia){
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));

@@ -3,14 +3,18 @@ package practica8;
 import Paint2D.Herramientas;
 import Paint2D.MiBufferedImage;
 import Paint2D.MiCellRenderer;
+import Paint2D.MiDialogo;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -396,7 +400,10 @@ public class MarcoPrincipal extends javax.swing.JFrame {
      * @param evt 
      */
     private void opcionAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionAbrirActionPerformed
+        FileFilter filtroJPEG=new FileNameExtensionFilter("Archivos JPEG", "jpg", "jpeg");
         JFileChooser dlg=new JFileChooser();
+        dlg.addChoosableFileFilter(filtroJPEG);
+        
         int resp=dlg.showOpenDialog(this);
         if(resp==JFileChooser.APPROVE_OPTION){
             try{
@@ -405,9 +412,17 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 opcionNuevoActionPerformed(evt);
                 ventanaActiva.getLienzo().setImagenFondo(img);
                 ventanaActiva.setName(f.getName());
+                MiDialogo diag=new MiDialogo(this,true,"Error al leer la imagen");
+                diag.setLocation((this.getWidth()/2)-diag.getWidth()/2,
+                                 (this.getHeight()/2)-diag.getHeight()/2);
+                diag.setVisible(true);
+
             }
             catch(Exception ex){
                 System.err.println("Error al leer la imagen");
+                
+                MiDialogo diag=new MiDialogo(this,true,"Error al leer la imagen");
+                diag.setVisible(true);
             }
         }
     }//GEN-LAST:event_opcionAbrirActionPerformed

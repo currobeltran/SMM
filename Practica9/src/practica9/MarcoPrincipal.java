@@ -724,10 +724,19 @@ public class MarcoPrincipal extends javax.swing.JFrame {
             int brillo=sliderBrillo.getValue();
             if(imagenAux!=null){
                 try{
-                    float[] scale={1.0F,1.0F,1.0F};
-                    float[] br={brillo,brillo,brillo};
-                    RescaleOp rop=new RescaleOp(scale,br,null);
-                    rop.filter(imagenAux, ventanaActiva.getLienzo().getImagenFondo(true));
+                    RescaleOp rop;
+                    if(imagenAux.getColorModel().hasAlpha()){
+                        float[] scale={1.0F,1.0F,1.0F,1.0F};
+                        float[] br={brillo,brillo,brillo,0};//Ponemos el ultimo parametro a 0 para no cambiar alpha                 
+                        rop=new RescaleOp(scale,br,null);
+
+                    }
+                    else{
+                        float scale=1.0F;
+                        float br=brillo;
+                        rop=new RescaleOp(scale,br,null);
+                    }
+                    rop.filter(imagenAux, ventanaActiva.getLienzo().getImagenFondo(false));
                     ventanaActiva.getLienzo().repaint();
                 }
                 catch(Exception e){

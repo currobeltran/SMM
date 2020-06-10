@@ -38,6 +38,7 @@ public class Lienzo extends javax.swing.JPanel {
     private boolean discontinuidad=false;
     private boolean liso=true;
     private boolean degradadoHorizontal=false;
+    private float gradoTransparencia=0.5f;
     private ArrayList<LienzoListener> lienzoEventListeners=new ArrayList();
     
     //Getters y setters de los atributos de la clase
@@ -161,6 +162,14 @@ public class Lienzo extends javax.swing.JPanel {
     public void setDegradadoHorizontal(boolean degradadoHorizontal) {
         this.degradadoHorizontal = degradadoHorizontal;
     }
+
+    public float getGradoTransparencia() {
+        return gradoTransparencia;
+    }
+
+    public void setGradoTransparencia(float gradoTransparencia) {
+        this.gradoTransparencia = gradoTransparencia;
+    }
     
     public BufferedImage getImagenFondo(boolean drawVector) {
         if(drawVector){
@@ -241,7 +250,7 @@ public class Lienzo extends javax.swing.JPanel {
         
         if(!editar)
             createShape(evt);
-        else if(formaSeleccionada!=null){
+        else{
             formaSeleccionada=setSelectedShape(evt.getPoint());
             cambiarAtributosSegunForma();
             
@@ -282,25 +291,25 @@ public class Lienzo extends javax.swing.JPanel {
             case Punto:
                 formaSeleccionada=new MiLinea2D(evt.getPoint(), evt.getPoint(), colorTrazo, colorRelleno, grosor, relleno,
                 alisado, transparencia, discontinuidad, liso, degradadoHorizontal, (Color)colorDegradado1, 
-                (Color) colorDegradado2);
+                (Color) colorDegradado2, gradoTransparencia);
             break;
 
             case Linea:
                 formaSeleccionada=new MiLinea2D(evt.getPoint(), evt.getPoint(), colorTrazo, colorRelleno, grosor, relleno,
                 alisado, transparencia, discontinuidad, liso, degradadoHorizontal, (Color)colorDegradado1, 
-                (Color) colorDegradado2);
+                (Color) colorDegradado2, gradoTransparencia);
             break;
 
             case Cuadrado:
                 formaSeleccionada=new MiRectangulo2D(evt.getX(), evt.getY(), 0, 0, colorTrazo, colorRelleno, grosor, relleno,
                 alisado, transparencia, discontinuidad, liso, degradadoHorizontal, (Color)colorDegradado1, 
-                (Color) colorDegradado2);
+                (Color) colorDegradado2, gradoTransparencia);
             break;
 
             case Ovalo:
                 formaSeleccionada=new MiElipse2D(evt.getPoint(), 0, 0, colorTrazo, colorRelleno, grosor, relleno,
                 alisado, transparencia, discontinuidad, liso, degradadoHorizontal, (Color)colorDegradado1, 
-                (Color) colorDegradado2);
+                (Color) colorDegradado2, gradoTransparencia);
             break;
         }
         
@@ -375,6 +384,10 @@ public class Lienzo extends javax.swing.JPanel {
             relleno=formaSeleccionada.isRelleno();
             transparencia=formaSeleccionada.isTransparencia();
             alisado=formaSeleccionada.isAlisado();
+            liso=formaSeleccionada.isLiso();
+            colorDegradado1=formaSeleccionada.getColor1();
+            colorDegradado2=formaSeleccionada.getColor2();
+            degradadoHorizontal=formaSeleccionada.isDegradadoHorizontal();
         }
     }
     

@@ -15,7 +15,7 @@ import sm.image.KernelProducer;
  *
  * @author curro
  */
-public class CellRendererFiltros extends JLabel implements ListCellRenderer<Integer>{
+public class CellRendererFiltros extends MiCellRenderer<Integer>{
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Integer> jlist, Integer e, int i, boolean bln, boolean bln1) {

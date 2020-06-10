@@ -23,10 +23,10 @@ public class MiLinea2D extends MiGraphics2D{
     
     public MiLinea2D(Point2D point, Point2D point0, Paint colorTrazo, Paint colorRelleno, int trazo, boolean relleno,
             boolean alisado, boolean transparencia, boolean discontinuidad, boolean liso,
-            boolean degradadoHorizontal, Color colorDegradado1, Color colorDegradado2) {
+            boolean degradadoHorizontal, Color colorDegradado1, Color colorDegradado2, float gradoTransparencia) {
         
         super(colorTrazo, colorRelleno, trazo, relleno, alisado, transparencia, discontinuidad, liso,
-                degradadoHorizontal, colorDegradado1, colorDegradado2);
+                degradadoHorizontal, colorDegradado1, colorDegradado2, gradoTransparencia);
         
         linea=new Line2D.Double(point, point0);
         setFigura(linea);

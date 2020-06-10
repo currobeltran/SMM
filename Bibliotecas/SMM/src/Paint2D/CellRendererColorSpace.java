@@ -16,7 +16,7 @@ import javax.swing.ListCellRenderer;
  *
  * @author curro
  */
-public class CellRendererColorSpace extends JLabel implements ListCellRenderer<Integer>{
+public class CellRendererColorSpace extends MiCellRenderer<Integer>{
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Integer> jlist, Integer e, int i, boolean bln, boolean bln1) {

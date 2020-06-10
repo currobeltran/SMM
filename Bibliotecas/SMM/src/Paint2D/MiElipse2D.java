@@ -24,10 +24,10 @@ public class MiElipse2D extends MiGraphics2D{
 
     public MiElipse2D(Point2D p, int i, int i0, Paint colorTrazo, Paint colorRelleno, int trazo, boolean relleno,
             boolean alisado, boolean transparencia, boolean discontinuidad, boolean liso,
-            boolean degradadoHorizontal, Color colorDegradado1, Color colorDegradado2) {
+            boolean degradadoHorizontal, Color colorDegradado1, Color colorDegradado2, float gradoTransparencia) {
         
         super(colorTrazo, colorRelleno, trazo,relleno,alisado,transparencia, discontinuidad, liso,
-                degradadoHorizontal, colorDegradado1, colorDegradado2);
+                degradadoHorizontal, colorDegradado1, colorDegradado2, gradoTransparencia);
         
         elipse=new Ellipse2D.Double(p.getX(), p.getY(), i, i0);
         setFigura(elipse);

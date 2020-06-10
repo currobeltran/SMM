@@ -23,10 +23,10 @@ public class MiRectangulo2D extends MiGraphics2D{
     
     public MiRectangulo2D(int x, int y, int ancho, int alto, Paint colorTrazo, Paint colorRelleno, int trazo, boolean relleno,
             boolean alisado, boolean transparencia, boolean discontinuidad, boolean liso,
-            boolean degradadoHorizontal, Color colorDegradado1, Color colorDegradado2) {
+            boolean degradadoHorizontal, Color colorDegradado1, Color colorDegradado2, float gradoTransparencia) {
         
         super(colorTrazo, colorRelleno, trazo,relleno,alisado,transparencia, discontinuidad, liso,
-                degradadoHorizontal, colorDegradado1, colorDegradado2);
+                degradadoHorizontal, colorDegradado1, colorDegradado2, gradoTransparencia);
         
         rectangulo=new Rectangle(x, y, ancho, alto);
         setFigura(rectangulo);

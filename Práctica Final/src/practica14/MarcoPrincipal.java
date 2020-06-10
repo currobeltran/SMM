@@ -6,7 +6,7 @@ import Paint2D.Herramientas;
 import Paint2D.LienzoEvent;
 import Paint2D.LienzoListener;
 import Paint2D.MiBufferedImage;
-import Paint2D.MiCellRenderer;
+import Paint2D.CellRendererColor;
 import Paint2D.MiDialogo;
 import Paint2D.MisFiltros;
 import image.PosterizarOp;
@@ -123,7 +123,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         degradadoHorizontal = new javax.swing.JRadioButton();
         jSeparator13 = new javax.swing.JToolBar.Separator();
         modoTransparencia = new javax.swing.JToggleButton();
-        jSlider1 = new javax.swing.JSlider();
+        sliderTransparencia = new javax.swing.JSlider();
         jSeparator15 = new javax.swing.JToolBar.Separator();
         modoAlisar = new javax.swing.JToggleButton();
         herramientasImagen = new javax.swing.JToolBar();
@@ -293,7 +293,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         herramientasGraficos.add(modoElipse);
         herramientasGraficos.add(jSeparator7);
 
-        seleccionColores.setRenderer(new MiCellRenderer());
+        seleccionColores.setRenderer(new CellRendererColor());
         seleccionColores.setModel(new javax.swing.DefaultComboBoxModel(new Color[] { Color.BLACK, Color.RED, Color.BLUE, Color.WHITE, Color.YELLOW, Color.GREEN }));
         seleccionColores.setPreferredSize(new java.awt.Dimension(60, 40));
         seleccionColores.addItemListener(new java.awt.event.ItemListener() {
@@ -404,7 +404,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         });
         herramientasGraficos.add(modoDegradadoRelleno);
 
-        seleccionColores1.setRenderer(new MiCellRenderer());
+        seleccionColores1.setRenderer(new CellRendererColor());
         seleccionColores1.setModel(new javax.swing.DefaultComboBoxModel(new Color[] { Color.BLACK, Color.RED, Color.BLUE, Color.WHITE, Color.YELLOW, Color.GREEN }));
         seleccionColores1.setPreferredSize(new java.awt.Dimension(60, 40));
         seleccionColores1.addItemListener(new java.awt.event.ItemListener() {
@@ -414,7 +414,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         });
         jPanel3.add(seleccionColores1);
 
-        seleccionColores2.setRenderer(new MiCellRenderer());
+        seleccionColores2.setRenderer(new CellRendererColor());
         seleccionColores2.setModel(new javax.swing.DefaultComboBoxModel(new Color[] { Color.BLACK, Color.RED, Color.BLUE, Color.WHITE, Color.YELLOW, Color.GREEN }));
         seleccionColores2.setPreferredSize(new java.awt.Dimension(60, 40));
         seleccionColores2.addItemListener(new java.awt.event.ItemListener() {
@@ -454,7 +454,24 @@ public class MarcoPrincipal extends javax.swing.JFrame {
             }
         });
         herramientasGraficos.add(modoTransparencia);
-        herramientasGraficos.add(jSlider1);
+
+        sliderTransparencia.setMaximum(10);
+        sliderTransparencia.setValue(5);
+        sliderTransparencia.setPreferredSize(new java.awt.Dimension(75, 16));
+        sliderTransparencia.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderTransparenciaStateChanged(evt);
+            }
+        });
+        sliderTransparencia.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                sliderTransparenciaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                sliderTransparenciaFocusLost(evt);
+            }
+        });
+        herramientasGraficos.add(sliderTransparencia);
         herramientasGraficos.add(jSeparator15);
 
         modoAlisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paintbasico2d/iconos/alisar.png"))); // NOI18N
@@ -1014,6 +1031,36 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         else{
             seleccionarColor((Color)ventanaActiva.getLienzo().getColorTrazo(), seleccionColores);   
         }
+        
+        if(ventanaActiva.getLienzo().isDiscontinuidad()){
+            discontinuidadActivada.setSelected(true);
+        }
+        else{
+            discontinuidadActivada.setSelected(false);
+        }
+
+        if(ventanaActiva.getLienzo().isLiso()){
+            modoLisoRelleno.setSelected(true);
+            modoDegradadoRelleno.setSelected(false);
+        }
+        else{
+            modoLisoRelleno.setSelected(false);
+            modoDegradadoRelleno.setSelected(true);
+        }
+
+        seleccionarColor((Color)ventanaActiva.getLienzo().getcolorDegradado1(), seleccionColores1);
+        seleccionarColor((Color)ventanaActiva.getLienzo().getcolorDegradado2(), seleccionColores2);
+
+        if(ventanaActiva.getLienzo().isDegradadoHorizontal()){
+            degradadoHorizontal.setSelected(true);
+            degradadoVertical.setSelected(false);
+        }
+        else{
+            degradadoHorizontal.setSelected(false);
+            degradadoVertical.setSelected(true);
+        }
+        
+        sliderTransparencia.setValue((int)(ventanaActiva.getLienzo().getGradoTransparencia()*10));
         
         cambiarValorGrosor(ventanaActiva.getLienzo().getGrosor());
         
@@ -2105,7 +2152,15 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_discontinuidadActivadaActionPerformed
 
     private void sacarDialogoColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sacarDialogoColorActionPerformed
-        //Que se supone que hay que hacer?
+        if(ventanaActiva!=null){
+            if(ventanaActiva.getLienzo().isRellenoColorActivado()){
+                ventanaActiva.getLienzo().setColorRelleno(JColorChooser.showDialog(this, "Elige un color de relleno", Color.RED));
+            }
+            else{
+                ventanaActiva.getLienzo().setColorTrazo(JColorChooser.showDialog(this, "Elige un color de trazo", Color.RED));
+            }
+            propertyChange();
+        }    
     }//GEN-LAST:event_sacarDialogoColorActionPerformed
 
     private void seleccionColores1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_seleccionColores1ItemStateChanged
@@ -2153,6 +2208,25 @@ public class MarcoPrincipal extends javax.swing.JFrame {
             propertyChange();
         }
     }//GEN-LAST:event_modoLisoRellenoActionPerformed
+
+    private void sliderTransparenciaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderTransparenciaStateChanged
+        if(ventanaActiva!=null){
+            ventanaActiva.getLienzo().setGradoTransparencia((float)(sliderTransparencia.getValue()/10.0));
+            propertyChange();
+        }
+    }//GEN-LAST:event_sliderTransparenciaStateChanged
+
+    private void sliderTransparenciaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderTransparenciaFocusLost
+        sliderTransparencia.setValue(5);
+    }//GEN-LAST:event_sliderTransparenciaFocusLost
+
+    private void sliderTransparenciaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderTransparenciaFocusGained
+        if(ventanaActiva!=null){
+            if(ventanaActiva.getLienzo().getFormaSeleccionada()!=null){
+                sliderTransparencia.setValue((int)(ventanaActiva.getLienzo().getFormaSeleccionada().getGradoTransparencia()*10));
+            }
+        }
+    }//GEN-LAST:event_sliderTransparenciaFocusGained
    
     /**
      * Genera un objeto LookupTable que representa una transformacion aplicando
@@ -2250,6 +2324,9 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 ventanaActiva.getLienzo().getFormaSeleccionada().setDegradadoHorizontal(
                         ventanaActiva.getLienzo().isDegradadoHorizontal());
                 
+                ventanaActiva.getLienzo().getFormaSeleccionada().setGradoTransparencia(
+                        ventanaActiva.getLienzo().getGradoTransparencia());
+                
                 ventanaActiva.getLienzo().repaint();
             }
         }
@@ -2309,6 +2386,8 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 degradadoVertical.setSelected(true);
             }
             
+            sliderTransparencia.setValue((int)(ventanaActiva.getLienzo().getGradoTransparencia()*10));
+            
             cambiarValorGrosor(ventanaActiva.getLienzo().getGrosor());
         }
     }
@@ -2361,6 +2440,8 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                     degradadoHorizontal.setSelected(false);
                     degradadoVertical.setSelected(true);
                 }
+                
+                sliderTransparencia.setValue((int)(ventanaActiva.getLienzo().getFormaSeleccionada().getGradoTransparencia()*10));
                 
                 cambiarValorGrosor(ventanaActiva.getLienzo().getFormaSeleccionada().getTrazo()); 
             }
@@ -2579,7 +2660,6 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private javax.swing.JToolBar.Separator jSeparator7;
     private javax.swing.JToolBar.Separator jSeparator8;
     private javax.swing.JToolBar.Separator jSeparator9;
-    private javax.swing.JSlider jSlider1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labelColor;
     private javax.swing.JComboBox<File> listaReproduccionAudio;
@@ -2620,6 +2700,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private javax.swing.JSlider sliderM;
     private javax.swing.JSlider sliderPosterizar;
     private javax.swing.JSlider sliderRotacion;
+    private javax.swing.JSlider sliderTransparencia;
     private javax.swing.JLabel tiempoAudio;
     private javax.swing.JMenuItem visibilidadBarraEstado;
     private javax.swing.JMenuItem visibilidadGraficos;

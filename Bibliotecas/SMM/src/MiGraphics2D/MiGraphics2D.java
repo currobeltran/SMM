@@ -39,12 +39,13 @@ public abstract class MiGraphics2D{
     private boolean discontinuidad=false;
     private boolean liso=true;
     private boolean degradadoHorizontal=false;
+    private float gradoTransparencia;
     
     private final float dash[]={10.0f};
     
     public MiGraphics2D(Paint colorTrazo, Paint colorRelleno, int trazo, boolean relleno, boolean alisado, 
             boolean transparencia, boolean discontinuidad, boolean liso, boolean degradadoHorizontal, 
-            Color color1, Color color2){
+            Color color1, Color color2, float gradoTransparencia){
         this.colorTrazo=colorTrazo;
         this.colorRelleno=colorRelleno;
         this.trazo=trazo;
@@ -56,6 +57,7 @@ public abstract class MiGraphics2D{
         this.degradadoHorizontal=degradadoHorizontal;
         this.color1=color1;
         this.color2=color2;
+        this.gradoTransparencia=gradoTransparencia;
     }
 
     public Paint getColorTrazo() {
@@ -169,6 +171,14 @@ public abstract class MiGraphics2D{
     public void setDegradadoHorizontal(boolean degradadoHorizontal) {
         this.degradadoHorizontal = degradadoHorizontal;
     }
+
+    public float getGradoTransparencia() {
+        return gradoTransparencia;
+    }
+
+    public void setGradoTransparencia(float gradoTransparencia) {
+        this.gradoTransparencia = gradoTransparencia;
+    }
            
     public abstract void setLocation(Point2D pos);
     
@@ -190,7 +200,7 @@ public abstract class MiGraphics2D{
         }
         
         if(transparencia){
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, gradoTransparencia));
         }
         else{            
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

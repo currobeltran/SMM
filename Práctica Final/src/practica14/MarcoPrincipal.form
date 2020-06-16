@@ -620,6 +620,59 @@
                     </Component>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JButton" name="botonMiOperadorLookup">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="MiOperador"/>
+                    <Property name="focusable" type="boolean" value="false"/>
+                    <Property name="horizontalTextPosition" type="int" value="0"/>
+                    <Property name="verticalTextPosition" type="int" value="3"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonMiOperadorLookupActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JSlider" name="sliderMiOperador">
+                  <Properties>
+                    <Property name="maximum" type="int" value="255"/>
+                    <Property name="value" type="int" value="128"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderMiOperadorStateChanged"/>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="sliderMiOperadorFocusGained"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="sliderMiOperadorFocusLost"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="botonMiOperacionPropia">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Operacion Propia"/>
+                    <Property name="focusable" type="boolean" value="false"/>
+                    <Property name="horizontalTextPosition" type="int" value="0"/>
+                    <Property name="verticalTextPosition" type="int" value="3"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonMiOperacionPropiaActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JSlider" name="sliderOperacionPropiaImg">
+                  <Properties>
+                    <Property name="maximum" type="int" value="255"/>
+                    <Property name="value" type="int" value="128"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderOperacionPropiaImgStateChanged"/>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="sliderOperacionPropiaImgFocusGained"/>
+                    <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="sliderOperacionPropiaImgFocusLost"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JSlider" name="sliderOperacionPropiaImg2">
+                  <Properties>
+                    <Property name="maximum" type="int" value="50"/>
+                    <Property name="value" type="int" value="0"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sliderOperacionPropiaImg2StateChanged"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JToolBar" name="herramientaSonido">

@@ -1,5 +1,6 @@
 package Paint2D;
 
+import MiGraphics2D.Drawable;
 import MiGraphics2D.MiGraphics2D;
 import MiGraphics2D.MiRectangulo2D;
 import java.awt.Color;
@@ -19,7 +20,7 @@ public class Lienzo extends javax.swing.JPanel {
     
     //Atributos de la clase
     private Herramientas herramienta=Herramientas.Punto;
-    private ArrayList<MiGraphics2D> formas=new ArrayList();
+    private ArrayList<Drawable> dibujables=new ArrayList();
     private Point2D p1;
     private int grosor=1;
     
@@ -34,7 +35,7 @@ public class Lienzo extends javax.swing.JPanel {
     private boolean transparencia=false;
     private boolean alisado=false;
     private MiGraphics2D formaSeleccionada=null;
-    private BufferedImage imagenFondo;
+    private MiBufferedImage imagenFondo;
     private boolean discontinuidad=false;
     private boolean liso=true;
     private boolean degradadoHorizontal=false;
@@ -173,12 +174,12 @@ public class Lienzo extends javax.swing.JPanel {
     
     public BufferedImage getImagenFondo(boolean drawVector) {
         if(drawVector){
-            BufferedImage imgout=new BufferedImage(imagenFondo.getWidth(),
-                                                   imagenFondo.getHeight(),
-                                                   imagenFondo.getType());
+            BufferedImage imgout=new BufferedImage(imagenFondo.getImagen().getWidth(),
+                                                   imagenFondo.getImagen().getHeight(),
+                                                   imagenFondo.getImagen().getType());
             
             boolean opacoActual=this.isOpaque();
-            if(imagenFondo.getColorModel().hasAlpha()){
+            if(imagenFondo.getImagen().getColorModel().hasAlpha()){
                 this.setOpaque(false);
             }
             
@@ -188,17 +189,21 @@ public class Lienzo extends javax.swing.JPanel {
         }
         
         else
-            return imagenFondo;
+            return imagenFondo.getImagen();
     }
 
     public void setImagenFondo(BufferedImage imagenFondo) {
-        this.imagenFondo = imagenFondo;
+        this.imagenFondo = new MiBufferedImage(imagenFondo);
         if(imagenFondo!=null){
             setPreferredSize(new Dimension(imagenFondo.getWidth(),imagenFondo.getHeight()));
-            if(formaSeleccionada!=null){
-                formaSeleccionada.setImagenFondo(imagenFondo);
-            }
+            dibujables.add(this.imagenFondo);
         }
+    }
+    
+    public void changeImagen(BufferedImage imagen){
+        int indice=dibujables.indexOf(imagenFondo);
+        this.imagenFondo=new MiBufferedImage(imagen);
+        dibujables.set(indice, imagenFondo);
     }
     
     /**
@@ -314,7 +319,7 @@ public class Lienzo extends javax.swing.JPanel {
         }
         
         if(formaSeleccionada!=null){
-            formas.add(formaSeleccionada);
+            dibujables.add(formaSeleccionada);
         }
         
     }
@@ -324,12 +329,13 @@ public class Lienzo extends javax.swing.JPanel {
         
         if(editar){
             s=formaSeleccionada;
-            if(s!=null)
+            if(s!=null){
                 s.setLocation(evt.getPoint());
+            }
         }
         
         else{
-            s=formas.get(formas.size()-1);
+            s=(MiGraphics2D)dibujables.get(dibujables.size()-1);
         
             if(s instanceof MiLinea2D && herramienta!=Herramientas.Punto){
                 ((MiLinea2D)s).modify(p1,evt.getPoint());
@@ -346,17 +352,18 @@ public class Lienzo extends javax.swing.JPanel {
     }
     
     /**
-     * Método que revisa si alguna figura del vector de formas del lienzo 
-     * contiene el Point2D enviado como argumento.
+     * Método que revisa si alguna figura del vector de dibujables del lienzo 
+ contiene el Point2D enviado como argumento.
      * @param p. Punto que debe contener la figura a seleccionar.
      * @return Shape s que contenga el punto, si no existen coincidencias 
      * devuelve null
      */
     
     private MiGraphics2D setSelectedShape(Point2D p){
-        for (MiGraphics2D s : formas){
-            if(s.contains(p)){
-                return s;
+        for (Drawable s : dibujables){
+            MiGraphics2D aux=(MiGraphics2D)s;
+            if(aux.contains(p)){
+                return aux;
             }
         }
         return null;
@@ -392,8 +399,8 @@ public class Lienzo extends javax.swing.JPanel {
     }
     
     /**
-     * Método que pinta los elementos que contenga el vector de formas
-     * de la clase.
+     * Método que pinta los elementos que contenga el vector de dibujables
+ de la clase.
      * @param g 
      */
     
@@ -402,7 +409,7 @@ public class Lienzo extends javax.swing.JPanel {
         super.paint(g);
         Graphics2D g2d=(Graphics2D)g;
         
-        for(MiGraphics2D s : formas){
+        for(Drawable s : dibujables){
             s.draw(g2d, this);
             
         }

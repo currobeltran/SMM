@@ -3,10 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/curro/Universidad/SMM/Bibliotecas/SMM/src/Paint2D/CellRendererColor.java</file>
-            <file>file:/home/curro/Universidad/SMM/Bibliotecas/SMM/src/Paint2D/CellRendererColorSpace.java</file>
-            <file>file:/home/curro/Universidad/SMM/Bibliotecas/SMM/src/Paint2D/MiCellRenderer.java</file>
-            <file>file:/home/curro/Universidad/SMM/Bibliotecas/SMM/src/Paint2D/CellRendererFiltros.java</file>
+            <file>file:/home/curro/Universidad/SMM/Bibliotecas/SMM/src/Paint2D/Lienzo.java</file>
+            <file>file:/home/curro/Universidad/SMM/Bibliotecas/SMM/src/image/MiOperacionImg.java</file>
         </group>
     </open-files>
 </project-private>

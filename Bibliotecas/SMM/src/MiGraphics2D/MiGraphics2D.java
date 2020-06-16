@@ -22,7 +22,7 @@ import java.awt.image.BufferedImage;
  *
  * @author curro
  */
-public abstract class MiGraphics2D{
+public abstract class MiGraphics2D extends Drawable{
     private Paint colorTrazo;
     private Paint colorRelleno;
     private Color color1;
@@ -186,11 +186,8 @@ public abstract class MiGraphics2D{
     
     public abstract void modify(Point2D nuevo1, Point2D nuevo2);
     
+    @Override
     public void draw(Graphics2D g2d, Lienzo l){
-         
-        if(imagenFondo!=null){
-            g2d.drawImage(imagenFondo, 0, 0, l);
-        }
         
         if(discontinuidad){
             g2d.setStroke(new BasicStroke(trazo, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL, 10.0f, dash, 0.0f)); 

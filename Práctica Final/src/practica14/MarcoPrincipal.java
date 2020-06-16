@@ -1,14 +1,15 @@
 package practica14;
 
+import Paint2D.CellRendererColor;
 import Paint2D.CellRendererColorSpace;
 import Paint2D.CellRendererFiltros;
 import Paint2D.Herramientas;
 import Paint2D.LienzoEvent;
 import Paint2D.LienzoListener;
 import Paint2D.MiBufferedImage;
-import Paint2D.CellRendererColor;
 import Paint2D.MiDialogo;
 import Paint2D.MisFiltros;
+import image.MiOperacionImg;
 import image.PosterizarOp;
 import image.RedOp;
 import java.awt.Color;
@@ -137,6 +138,11 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         botonCuadratica = new javax.swing.JButton();
         sliderM = new javax.swing.JSlider();
         botonCombinar = new javax.swing.JButton();
+        botonMiOperadorLookup = new javax.swing.JButton();
+        sliderMiOperador = new javax.swing.JSlider();
+        botonMiOperacionPropia = new javax.swing.JButton();
+        sliderOperacionPropiaImg = new javax.swing.JSlider();
+        sliderOperacionPropiaImg2 = new javax.swing.JSlider();
         herramientaSonido = new javax.swing.JToolBar();
         botonReproducirAudio = new javax.swing.JButton();
         botonDetenerAudio = new javax.swing.JButton();
@@ -293,7 +299,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         herramientasGraficos.add(modoElipse);
         herramientasGraficos.add(jSeparator7);
 
-        seleccionColores.setRenderer(new CellRendererColor());
+        seleccionColores.setRenderer(new Paint2D.CellRendererColor());
         seleccionColores.setModel(new javax.swing.DefaultComboBoxModel(new Color[] { Color.BLACK, Color.RED, Color.BLUE, Color.WHITE, Color.YELLOW, Color.GREEN }));
         seleccionColores.setPreferredSize(new java.awt.Dimension(60, 40));
         seleccionColores.addItemListener(new java.awt.event.ItemListener() {
@@ -404,7 +410,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         });
         herramientasGraficos.add(modoDegradadoRelleno);
 
-        seleccionColores1.setRenderer(new CellRendererColor());
+        seleccionColores1.setRenderer(new Paint2D.CellRendererColor());
         seleccionColores1.setModel(new javax.swing.DefaultComboBoxModel(new Color[] { Color.BLACK, Color.RED, Color.BLUE, Color.WHITE, Color.YELLOW, Color.GREEN }));
         seleccionColores1.setPreferredSize(new java.awt.Dimension(60, 40));
         seleccionColores1.addItemListener(new java.awt.event.ItemListener() {
@@ -414,7 +420,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         });
         jPanel3.add(seleccionColores1);
 
-        seleccionColores2.setRenderer(new CellRendererColor());
+        seleccionColores2.setRenderer(new Paint2D.CellRendererColor());
         seleccionColores2.setModel(new javax.swing.DefaultComboBoxModel(new Color[] { Color.BLACK, Color.RED, Color.BLUE, Color.WHITE, Color.YELLOW, Color.GREEN }));
         seleccionColores2.setPreferredSize(new java.awt.Dimension(60, 40));
         seleccionColores2.addItemListener(new java.awt.event.ItemListener() {
@@ -569,6 +575,71 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         panelCuadratico.add(botonCombinar);
 
         herramientasImagen.add(panelCuadratico);
+
+        botonMiOperadorLookup.setText("MiOperador");
+        botonMiOperadorLookup.setFocusable(false);
+        botonMiOperadorLookup.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonMiOperadorLookup.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botonMiOperadorLookup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonMiOperadorLookupActionPerformed(evt);
+            }
+        });
+        herramientasImagen.add(botonMiOperadorLookup);
+
+        sliderMiOperador.setMaximum(255);
+        sliderMiOperador.setValue(128);
+        sliderMiOperador.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderMiOperadorStateChanged(evt);
+            }
+        });
+        sliderMiOperador.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                sliderMiOperadorFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                sliderMiOperadorFocusLost(evt);
+            }
+        });
+        herramientasImagen.add(sliderMiOperador);
+
+        botonMiOperacionPropia.setText("Operacion Propia");
+        botonMiOperacionPropia.setFocusable(false);
+        botonMiOperacionPropia.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonMiOperacionPropia.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botonMiOperacionPropia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonMiOperacionPropiaActionPerformed(evt);
+            }
+        });
+        herramientasImagen.add(botonMiOperacionPropia);
+
+        sliderOperacionPropiaImg.setMaximum(255);
+        sliderOperacionPropiaImg.setValue(128);
+        sliderOperacionPropiaImg.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderOperacionPropiaImgStateChanged(evt);
+            }
+        });
+        sliderOperacionPropiaImg.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                sliderOperacionPropiaImgFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                sliderOperacionPropiaImgFocusLost(evt);
+            }
+        });
+        herramientasImagen.add(sliderOperacionPropiaImg);
+
+        sliderOperacionPropiaImg2.setMaximum(50);
+        sliderOperacionPropiaImg2.setValue(0);
+        sliderOperacionPropiaImg2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sliderOperacionPropiaImg2StateChanged(evt);
+            }
+        });
+        herramientasImagen.add(sliderOperacionPropiaImg2);
 
         jTabbedPane1.addTab("Imagen", herramientasImagen);
 
@@ -1007,6 +1078,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
      */
     private void opcionNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionNuevoActionPerformed
         nuevoMarcoSecundario();
+        ventanaActiva.setTitle("Nuevo");
     }//GEN-LAST:event_opcionNuevoActionPerformed
 
     private void nuevoMarcoSecundario(){
@@ -1065,7 +1137,8 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         cambiarValorGrosor(ventanaActiva.getLienzo().getGrosor());
         
         MiBufferedImage img=new MiBufferedImage(1000,1000,BufferedImage.TYPE_INT_ARGB_PRE);
-        ventanaActiva.getLienzo().setImagenFondo(img);
+        ventanaActiva.getLienzo().setImagenFondo(img.getImagen());
+        
     }
     
     /**
@@ -1154,7 +1227,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
      * @param evt 
      */
     private void opcionAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_opcionAbrirActionPerformed
-        FileFilter filtroJPEG=new FileNameExtensionFilter("JPEG", "jpg", "jpeg");
+        FileFilter filtroJPEG=new FileNameExtensionFilter("JPG/JPEG", "jpg", "jpeg");
         FileFilter filtroPNG=new FileNameExtensionFilter("PNG", "png");
         FileFilter filtroWAV=new FileNameExtensionFilter("WAV", "wav");
         FileFilter filtroAU=new FileNameExtensionFilter("AU", "au");
@@ -1177,9 +1250,9 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 if(extension.equals(".jpg") || extension.equals(".jpeg") || extension.equals(".png")){
                     File f =dlg.getSelectedFile();
                     BufferedImage img=ImageIO.read(f);
-                    opcionNuevoActionPerformed(evt);
+                    nuevoMarcoSecundario();
                     ventanaActiva.getLienzo().setImagenFondo(img);
-                    ventanaActiva.setName(f.getName());
+                    ventanaActiva.setTitle(f.getName());
                 }
                 else if(extension.equals(".wav") || extension.equals(".au")){
                     File f =new File(dlg.getSelectedFile().getAbsolutePath()){
@@ -1469,7 +1542,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                     AffineTransform at=AffineTransform.getScaleInstance(factor, factor);
                     AffineTransformOp atop=new AffineTransformOp(at,AffineTransformOp.TYPE_BILINEAR);
                     BufferedImage dest=atop.filter(img,null);
-                    ventanaActiva.getLienzo().setImagenFondo(dest);
+                    ventanaActiva.getLienzo().changeImagen(dest); 
                     ventanaActiva.repaint();
                 }
                 catch(IllegalArgumentException e){
@@ -1606,7 +1679,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                     AffineTransform at=AffineTransform.getRotateInstance(r, centro.x, centro.y);
                     AffineTransformOp atop=new AffineTransformOp(at,AffineTransformOp.TYPE_BILINEAR);
                     BufferedImage dest=atop.filter(imagenAux, null);
-                    ventanaActiva.getLienzo().setImagenFondo(dest);
+                    ventanaActiva.getLienzo().changeImagen(dest); 
                     ventanaActiva.repaint();
                 }
                 catch(IllegalArgumentException e){
@@ -1854,7 +1927,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         if(ventanaActiva!=null){
             BufferedImage img=ventanaActiva.getLienzo().getImagenFondo(false);
             if(img!=null){
-                TintOp tintado=new TintOp((Color)seleccionColores.getSelectedItem(), 0.5F);
+                TintOp tintado=new TintOp((Color)seleccionColores.getSelectedItem(), 0.5F); //Cambiar para paleta 
                 tintado.filter(img, img);
                 ventanaActiva.getLienzo().repaint();
             }
@@ -2227,7 +2300,76 @@ public class MarcoPrincipal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_sliderTransparenciaFocusGained
+
+    private void botonMiOperadorLookupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonMiOperadorLookupActionPerformed
+        copiaImagen();
+        aplicacionMiOperadorLookup(128);
+        imagenAux=null;
+    }//GEN-LAST:event_botonMiOperadorLookupActionPerformed
+
+    private void sliderMiOperadorStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderMiOperadorStateChanged
+        aplicacionMiOperadorLookup(sliderMiOperador.getValue());
+    }//GEN-LAST:event_sliderMiOperadorStateChanged
+
+    private void sliderMiOperadorFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderMiOperadorFocusGained
+        copiaImagen();
+    }//GEN-LAST:event_sliderMiOperadorFocusGained
+
+    private void sliderMiOperadorFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderMiOperadorFocusLost
+        imagenAux=null;
+        sliderMiOperador.setValue(128);
+    }//GEN-LAST:event_sliderMiOperadorFocusLost
+
+    private void botonMiOperacionPropiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonMiOperacionPropiaActionPerformed
+        imagenAux=ventanaActiva.getLienzo().getImagenFondo(false);
+        aplicacionMiOperacionImg(150,10);
+        imagenAux=null;
+    }//GEN-LAST:event_botonMiOperacionPropiaActionPerformed
+
+    private void sliderOperacionPropiaImgStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderOperacionPropiaImgStateChanged
+        aplicacionMiOperacionImg(sliderOperacionPropiaImg.getValue(), sliderOperacionPropiaImg2.getValue());
+    }//GEN-LAST:event_sliderOperacionPropiaImgStateChanged
+
+    private void sliderOperacionPropiaImgFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderOperacionPropiaImgFocusGained
+        copiaImagen();
+    }//GEN-LAST:event_sliderOperacionPropiaImgFocusGained
+
+    private void sliderOperacionPropiaImgFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_sliderOperacionPropiaImgFocusLost
+        imagenAux=null;
+    }//GEN-LAST:event_sliderOperacionPropiaImgFocusLost
+
+    private void sliderOperacionPropiaImg2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sliderOperacionPropiaImg2StateChanged
+        aplicacionMiOperacionImg(sliderOperacionPropiaImg.getValue(), sliderOperacionPropiaImg2.getValue());
+    }//GEN-LAST:event_sliderOperacionPropiaImg2StateChanged
    
+    public void aplicacionMiOperacionImg(int m, int n){
+        if(ventanaActiva!=null){
+            if(imagenAux!=null){
+                MiOperacionImg rop=new MiOperacionImg(m, n);
+                BufferedImage dest=rop.filter(imagenAux, null);
+                ventanaActiva.getLienzo().setImagenFondo(dest);
+                ventanaActiva.getLienzo().repaint();
+            }
+        }
+    }
+    
+    public void aplicacionMiOperadorLookup(double m){
+        if(ventanaActiva!=null){
+            if(imagenAux!=null){
+                try{
+                    LookupTable lt=miOperadorLookUp(m);
+                    LookupOp lop=new LookupOp(lt,null);
+                    BufferedImage dest=lop.filter(imagenAux,null);
+                    ventanaActiva.getLienzo().setImagenFondo(dest);
+                    ventanaActiva.repaint();
+                }
+                catch(IllegalArgumentException e){
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
+    }
+    
     /**
      * Genera un objeto LookupTable que representa una transformacion aplicando
      * una funcion cuadratica. Tenemos que definir una variable K que represente
@@ -2284,6 +2426,41 @@ public class MarcoPrincipal extends javax.swing.JFrame {
                 }
             }
         }
+    }
+    
+    
+    /**
+     * Metodo propio de operacion LookUp. La funcion aplicada es la siguiente:
+     * log(pow((x-m),2))
+     * @param m parametro donde la funcion sera 0
+     * @return Tabla Lookup correspondiente a nuestra funcion
+     */
+    public LookupTable miOperadorLookUp(double m){
+        double K; 
+        
+        if(m>=128){
+            K=255.0/(Math.log(Math.pow(0-m,2)));
+        }
+        else{
+            K=255.0/(Math.log(Math.pow(255-m,2)));
+        }
+        
+        byte funcionT[]=new byte[256];
+        double aux;
+        
+        for(int i=0; i<256; i++){
+            if(i!=m)
+               aux= K*(Math.log(Math.pow(i-m,2)));
+            
+            else
+                aux=0;
+            
+            funcionT[i]=(byte)(aux);
+        }
+        
+        LookupTable tabla=new ByteLookupTable(0,funcionT);
+        
+        return tabla;
     }
     
     public void propertyChange() {
@@ -2594,6 +2771,7 @@ public class MarcoPrincipal extends javax.swing.JFrame {
         selectorGrosor.setValue(i);
     }
     
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton activarColorRelleno;
     private javax.swing.JToggleButton activarColorTrazo;
@@ -2614,6 +2792,8 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton botonFiltroRojo;
     private javax.swing.JButton botonGrabarAudio;
     private javax.swing.JButton botonGuardar;
+    private javax.swing.JButton botonMiOperacionPropia;
+    private javax.swing.JButton botonMiOperadorLookup;
     private javax.swing.JButton botonNegativo;
     private javax.swing.JButton botonNuevo;
     private javax.swing.JButton botonReproducirAudio;
@@ -2698,6 +2878,9 @@ public class MarcoPrincipal extends javax.swing.JFrame {
     private javax.swing.JSpinner selectorGrosor;
     private javax.swing.JSlider sliderBrillo;
     private javax.swing.JSlider sliderM;
+    private javax.swing.JSlider sliderMiOperador;
+    private javax.swing.JSlider sliderOperacionPropiaImg;
+    private javax.swing.JSlider sliderOperacionPropiaImg2;
     private javax.swing.JSlider sliderPosterizar;
     private javax.swing.JSlider sliderRotacion;
     private javax.swing.JSlider sliderTransparencia;

@@ -53,4 +53,5 @@ public class MiLinea2D extends MiGraphics2D{
     public void modify(Point2D nuevo1, Point2D nuevo2) {
         linea.setLine(nuevo1, nuevo2);
     }
+        
 }
